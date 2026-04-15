@@ -1,0 +1,27 @@
+<%# locals: program %>
+<div class="overflow-x-auto rounded-lg border border-arrecife/60">
+  <table class="min-w-full divide-y divide-arrecife/50 text-left text-sm">
+    <thead class="bg-espuma/80 text-xs font-medium uppercase tracking-wide text-slate-600">
+      <tr>
+        <th class="px-3 py-2">Buzo</th>
+        <th class="px-3 py-2">Correo</th>
+        <th class="px-3 py-2">Inscripción</th>
+        <th class="px-3 py-2">Pagos</th>
+      </tr>
+    </thead>
+    <tbody class="divide-y divide-arrecife/40 bg-white">
+      <% staff_registrations_for_table(program).each do |registration| %>
+        <tr>
+          <td class="whitespace-nowrap px-3 py-2 text-abismo"><%= registration.diver.name %></td>
+          <td class="px-3 py-2 text-slate-600"><%= registration.diver.email %></td>
+          <td class="whitespace-nowrap px-3 py-2">
+            <span class="inline-block rounded px-2 py-0.5 text-xs font-medium <%= registration_status_badge_class(registration.status) %>">
+              <%= registration_status_text(registration) %>
+            </span>
+          </td>
+          <td class="px-3 py-2 text-slate-700"><%= staff_registration_payment_summary(registration) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+</div>

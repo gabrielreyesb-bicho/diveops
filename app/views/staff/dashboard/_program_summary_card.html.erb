@@ -1,0 +1,76 @@
+<%# locals: item %>
+<% program = item[:record] %>
+<% trip = item[:kind] == :trip %>
+<% mode = staff_dashboard_program_mode(program) %>
+<% type_label = trip ? "Viaje" : "Curso" %>
+<% type_border = trip ? "border-oceano" : "border-caribe" %>
+<% type_bg = trip ? "bg-oceano" : "bg-caribe" %>
+<div class="overflow-hidden rounded-xl border border-arrecife bg-white shadow-sm">
+  <div class="flex flex-wrap items-start justify-between gap-3 border-b border-arrecife/80 px-4 py-3">
+    <div class="min-w-0">
+      <div class="flex flex-wrap items-center gap-2">
+        <span class="inline-block rounded px-2 py-0.5 text-xs font-bold uppercase tracking-wide text-white <%= type_bg %>"><%= type_label %></span>
+        <span class="inline-block rounded px-2 py-0.5 text-xs font-medium <%= program_status_badge_class(program.status) %>">
+          <%= program_status_text(program) %>
+        </span>
+      </div>
+      <h2 class="mt-2 text-lg font-semibold text-abismo"><%= program.title %></h2>
+      <% if trip %>
+        <p class="mt-1 text-sm text-slate-600"><%= program.destination %></p>
+        <p class="mt-1 text-sm text-slate-700">
+          <%= program.departure_date&.strftime("%Y-%m-%d") %> → <%= program.return_date&.strftime("%Y-%m-%d") %>
+        </p>
+      <% else %>
+        <p class="mt-1 text-sm text-slate-600"><%= program.certification_granted.presence || "Curso" %></p>
+        <p class="mt-1 text-sm text-slate-700">
+          <%= program.start_date&.strftime("%Y-%m-%d") %> → <%= program.end_date&.strftime("%Y-%m-%d") %>
+        </p>
+      <% end %>
+      <p class="mt-2 text-sm text-slate-600">
+        Cupos: <%= program.registration_slots_used %> / <%= program.max_capacity %>
+        <% if program.base_price.present? %>
+          · <%= number_to_currency(program.base_price, unit: "$", precision: 2) %>
+        <% end %>
+      </p>
+    </div>
+    <div class="flex flex-shrink-0 flex-wrap gap-3 text-sm">
+      <%= link_to "Ver", staff_program_show_path(item), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+      <%= link_to "Editar", staff_program_edit_path(item), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+      <% if trip %>
+        <%= link_to "Inscripciones", staff_dive_trip_registrations_path(program), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+      <% else %>
+        <%= link_to "Inscripciones", staff_course_registrations_path(program), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+      <% end %>
+    </div>
+  </div>
+
+  <div class="px-4 py-4">
+    <% if mode == :planning %>
+      <p class="text-sm text-slate-600">En planificación. No se muestran inscripciones públicas hasta publicar el programa.</p>
+      <% if program.registrations.any? %>
+        <p class="mt-2 text-sm text-coral">Hay <%= program.registrations.size %> inscripción(es) asociadas (revisá en la vista del programa).</p>
+      <% end %>
+
+    <% elsif mode == :cancelled %>
+      <% if program.cancellation_reason.present? %>
+        <p class="text-sm text-slate-700"><span class="font-medium text-abismo">Motivo de cancelación:</span> <%= program.cancellation_reason %></p>
+      <% else %>
+        <p class="text-sm text-slate-600">Programa cancelado.</p>
+      <% end %>
+      <% if program.registrations.any? %>
+        <div class="mt-4">
+          <%= render "staff/dashboard/registrations_table", program: program %>
+        </div>
+      <% end %>
+
+    <% else %>
+      <%# active: open, full, pending_confirmation, confirmed %>
+      <% regs = staff_registrations_for_table(program) %>
+      <% if regs.empty? %>
+        <p class="text-sm text-slate-600">Sin inscripciones todavía.</p>
+      <% else %>
+        <%= render "staff/dashboard/registrations_table", program: program %>
+      <% end %>
+    <% end %>
+  </div>
+</div>

@@ -1,0 +1,47 @@
+<div class="mx-auto max-w-5xl">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <h1 class="text-xl font-semibold text-profundo">Cursos</h1>
+    <%= link_to "Nuevo curso", new_staff_course_path, class: "inline-flex items-center justify-center rounded-lg border-2 border-caribe bg-white px-4 py-2 text-sm font-medium text-caribe shadow-sm transition hover:bg-espuma hover:text-profundo", data: { turbo: false } %>
+  </div>
+
+  <div class="mt-6 overflow-hidden rounded-xl border border-arrecife/60 bg-white shadow-md ring-1 ring-arrecife/60">
+    <% if @courses.any? %>
+      <div class="overflow-x-auto">
+        <table class="w-full min-w-[640px] border-collapse text-left text-sm">
+          <thead>
+            <tr class="border-b border-arrecife bg-espuma/90 text-xs font-semibold uppercase tracking-wide text-profundo">
+              <th scope="col" class="whitespace-nowrap px-4 py-3">Nombre</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3">Certificación</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3">Inicio</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3">Fin</th>
+              <th scope="col" class="whitespace-nowrap px-4 py-3">Estado</th>
+              <th scope="col" class="px-4 py-3"><span class="sr-only">Acciones</span></th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-arrecife/50">
+            <% @courses.each do |course| %>
+              <tr class="bg-white transition hover:bg-espuma/50">
+                <td class="px-4 py-3 font-medium text-abismo"><%= course.title %></td>
+                <td class="max-w-[12rem] truncate px-4 py-3 text-abismo/90" title="<%= course.certification_granted %>"><%= course.certification_granted %></td>
+                <td class="whitespace-nowrap px-4 py-3 text-abismo/90"><%= course.start_date&.strftime("%Y-%m-%d") %></td>
+                <td class="whitespace-nowrap px-4 py-3 text-abismo/90"><%= course.end_date&.strftime("%Y-%m-%d") %></td>
+                <td class="whitespace-nowrap px-4 py-3 text-abismo/90"><%= program_status_text(course) %></td>
+                <td class="whitespace-nowrap px-4 py-3">
+                  <%= link_to "Ver", staff_course_path(course), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+                  <span class="text-arrecife" aria-hidden="true"> · </span>
+                  <%= link_to "Editar", edit_staff_course_path(course), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    <% else %>
+      <p class="px-6 py-12 text-center text-sm text-slate-600">No hay cursos todavía. <%= link_to "Crear el primero", new_staff_course_path, class: "font-medium text-oceano underline hover:text-profundo" %>.</p>
+    <% end %>
+  </div>
+
+  <p class="mt-8">
+    <%= link_to "← Panel", staff_root_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+  </p>
+</div>

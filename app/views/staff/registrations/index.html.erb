@@ -1,0 +1,71 @@
+<div class="max-w-6xl space-y-6">
+  <div class="flex flex-wrap items-baseline justify-between gap-4">
+    <h1 class="text-xl font-semibold text-slate-900">Inscripciones</h1>
+    <% if @index_scope_title.present? %>
+      <p class="text-sm text-slate-600"><%= @index_scope_title %></p>
+    <% end %>
+  </div>
+
+  <% if @index_scope_title.blank? %>
+    <%= form_with url: staff_registrations_path, method: :get, local: true, class: "flex flex-wrap items-end gap-3 rounded border border-slate-200 bg-slate-50 p-4 text-sm" do %>
+      <div>
+        <label class="block text-xs font-medium text-slate-600">Programa</label>
+        <%= select_tag :program_type,
+                       options_for_select([ [ "Todos", "" ], [ "Viaje (DiveTrip)", "DiveTrip" ], [ "Curso", "Course" ] ], params[:program_type]),
+                       class: "mt-1 rounded border border-slate-300 px-2 py-1" %>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-slate-600">ID programa</label>
+        <%= text_field_tag :program_id, params[:program_id], class: "mt-1 w-24 rounded border border-slate-300 px-2 py-1" %>
+      </div>
+      <div>
+        <label class="block text-xs font-medium text-slate-600">Estado inscripción</label>
+        <%= select_tag :status,
+                       options_for_select(
+                         [
+                           [ "Todos", "" ],
+                           [ "Pendiente", "pending" ],
+                           [ "Confirmada", "confirmed" ],
+                           [ "Lista de espera", "waitlisted" ],
+                           [ "Cancelada", "cancelled" ]
+                         ],
+                         params[:status]
+                       ),
+                       class: "mt-1 rounded border border-slate-300 px-2 py-1" %>
+      </div>
+      <%= submit_tag "Filtrar", class: "rounded bg-profundo px-3 py-1.5 text-sm font-medium text-espuma hover:bg-abismo" %>
+      <%= link_to "Limpiar", staff_registrations_path, class: "text-sm text-caribe underline" %>
+    <% end %>
+  <% end %>
+
+  <% if @registrations.blank? %>
+    <p class="text-sm text-slate-600">No hay inscripciones.</p>
+  <% else %>
+    <div class="overflow-x-auto rounded border border-slate-200">
+      <table class="min-w-full border-collapse text-left">
+        <thead class="bg-slate-50 text-xs font-medium text-slate-600">
+          <tr>
+            <th class="px-3 py-2">Buzo</th>
+            <th class="px-3 py-2">Programa</th>
+            <th class="px-3 py-2">Fecha inscripción</th>
+            <th class="px-3 py-2">Estado</th>
+            <th class="px-3 py-2">Acciones</th>
+          </tr>
+        </thead>
+        <tbody>
+          <%= render partial: "staff/registrations/registration_row", collection: @registrations, as: :registration %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+
+  <p class="text-sm">
+    <% if @index_scope_title.present? && defined?(@dive_trip) && @dive_trip %>
+      <%= link_to "← Viaje", staff_dive_trip_path(@dive_trip), class: "text-caribe underline" %>
+    <% elsif @index_scope_title.present? && defined?(@course) && @course %>
+      <%= link_to "← Curso", staff_course_path(@course), class: "text-caribe underline" %>
+    <% else %>
+      <%= link_to "← Panel", staff_root_path, class: "text-caribe underline" %>
+    <% end %>
+  </p>
+</div>

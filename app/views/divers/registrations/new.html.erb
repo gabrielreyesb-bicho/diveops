@@ -1,0 +1,58 @@
+<% content_for :title, "Registro de buzo · DiveOps" %>
+<% content_for :auth_tagline, "Únete para inscribirte en viajes y cursos del catálogo." %>
+
+<div class="space-y-2 text-center">
+  <p class="inline-flex rounded-full bg-arrecife/50 px-3 py-1 text-xs font-semibold uppercase tracking-wide text-abismo">Buzo</p>
+  <h1 class="<%= auth_card_title_class %>">Crear cuenta</h1>
+  <p class="<%= auth_muted_class %>">Nombre, correo y contraseña — o usa Google abajo.</p>
+</div>
+
+<%= form_for(resource, as: resource_name, url: registration_path(resource_name), html: { class: "mt-8 space-y-5" }) do |f| %>
+  <%= render "devise/shared/error_messages", resource: resource %>
+
+  <div>
+    <%= f.label :name, "Nombre", class: auth_label_class %>
+    <%= f.text_field :name, autofocus: true, autocomplete: "name", class: auth_input_class, placeholder: "Tu nombre" %>
+  </div>
+
+  <div>
+    <%= f.label :email, "Correo electrónico", class: auth_label_class %>
+    <%= f.email_field :email, autocomplete: "email", class: auth_input_class, placeholder: "tu@email.com" %>
+  </div>
+
+  <div>
+    <%= f.label :password, "Contraseña", class: auth_label_class %>
+    <% if @minimum_password_length %>
+      <span class="text-xs text-slate-500">(mínimo <%= @minimum_password_length %> caracteres)</span>
+    <% end %>
+    <%= f.password_field :password, autocomplete: "new-password", class: auth_input_class %>
+  </div>
+
+  <div>
+    <%= f.label :password_confirmation, "Confirmar contraseña", class: auth_label_class %>
+    <%= f.password_field :password_confirmation, autocomplete: "new-password", class: auth_input_class %>
+  </div>
+
+  <div>
+    <%= f.submit "Registrarse", class: "w-full cursor-pointer rounded-xl bg-coral px-4 py-3 text-sm font-semibold text-white shadow-md transition hover:bg-coral-hover focus:outline-none focus:ring-2 focus:ring-oceano focus:ring-offset-2" %>
+  </div>
+<% end %>
+
+<p class="mt-8 text-center text-sm">
+  ¿Ya tienes cuenta?
+  <%= link_to "Iniciar sesión", new_session_path(resource_name), class: auth_secondary_link_class %>
+</p>
+
+<% if devise_mapping.omniauthable? %>
+  <div class="mt-8 border-t border-slate-200 pt-6">
+    <p class="mb-3 text-center text-xs font-medium uppercase tracking-wide text-slate-500">O continúa con</p>
+    <% resource_class.omniauth_providers.each do |provider| %>
+      <%= button_to omniauth_authorize_path(resource_name, provider),
+                    data: { turbo: false },
+                    class: "flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-800 shadow-sm transition hover:border-slate-300 hover:bg-slate-50" do %>
+        <span class="text-base" aria-hidden="true">G</span>
+        Continuar con Google
+      <% end %>
+    <% end %>
+  </div>
+<% end %>

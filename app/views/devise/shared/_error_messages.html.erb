@@ -1,0 +1,10 @@
+<% if resource.errors.any? %>
+  <div class="mb-6 rounded-xl border border-red-200 bg-red-50/90 px-4 py-3 text-sm text-red-900 shadow-sm" role="alert">
+    <p class="font-medium"><%= pluralize(resource.errors.count, "error") %> impidieron guardar:</p>
+    <ul class="mt-2 list-disc space-y-0.5 pl-5 text-red-800">
+      <% resource.errors.full_messages.each do |message| %>
+        <li><%= message %></li>
+      <% end %>
+    </ul>
+  </div>
+<% end %>

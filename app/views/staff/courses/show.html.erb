@@ -1,0 +1,83 @@
+<div class="mx-auto max-w-3xl space-y-6">
+  <div class="overflow-hidden rounded-xl border border-arrecife/60 bg-white p-6 shadow-md ring-1 ring-arrecife/60 sm:p-8">
+    <div class="flex flex-wrap items-start justify-between gap-4">
+      <h1 class="text-xl font-semibold text-profundo"><%= @course.title %></h1>
+      <div class="flex flex-wrap gap-2 text-sm">
+        <%= link_to "Editar", edit_staff_course_path(@course), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+        <%= button_to "Eliminar", staff_course_path(@course), method: :delete, form: { data: { turbo_confirm: "¿Eliminar este curso?" } }, class: "text-red-700 underline" %>
+      </div>
+    </div>
+
+    <dl class="mt-6 grid grid-cols-1 gap-2 text-sm sm:grid-cols-2">
+      <dt class="text-abismo/70">Certificación otorgada</dt>
+      <dd class="text-abismo"><%= @course.certification_granted %></dd>
+      <dt class="text-abismo/70">Prerrequisito</dt>
+      <dd class="text-abismo"><%= @course.prerequisite_certification %></dd>
+      <dt class="text-abismo/70">Inicio / Fin</dt>
+      <dd class="text-abismo"><%= @course.start_date&.strftime("%Y-%m-%d") %> → <%= @course.end_date&.strftime("%Y-%m-%d") %></dd>
+      <dt class="text-abismo/70">Duración</dt>
+      <dd class="text-abismo"><%= @course.duration_description %></dd>
+      <dt class="text-abismo/70">Cupos</dt>
+      <dd class="text-abismo"><%= @course.min_capacity %> – <%= @course.max_capacity %></dd>
+      <dt class="text-abismo/70">Precio base</dt>
+      <dd class="text-abismo"><%= @course.base_price %></dd>
+      <dt class="text-abismo/70">Estado</dt>
+      <dd class="text-abismo"><%= program_status_text(@course) %></dd>
+      <% if @course.cancellation_reason.present? %>
+        <dt class="text-abismo/70">Motivo cancelación</dt>
+        <dd class="text-abismo"><%= @course.cancellation_reason %></dd>
+      <% end %>
+    </dl>
+
+    <p class="mt-6 text-sm">
+      <%= link_to "Inscripciones de este curso", staff_course_registrations_path(@course), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+    </p>
+
+    <section class="mt-8">
+      <h2 class="text-sm font-medium text-profundo">Descripción</h2>
+      <div class="trix-content mt-2 rounded-lg border border-arrecife/50 bg-espuma/30 p-3 text-sm text-abismo"><%= @course.description %></div>
+    </section>
+
+    <section class="mt-8">
+      <h2 class="text-sm font-medium text-profundo">Fotos</h2>
+      <% if @course.photos.any? %>
+        <ul class="mt-3 space-y-3">
+          <% @course.photos.order(:position).each do |photo| %>
+            <li class="flex flex-wrap items-center gap-3">
+              <% if photo.image.attached? %>
+                <%= image_tag photo.image.variant(resize_to_limit: [ 400, 400 ]), class: "max-h-40 rounded-lg border border-arrecife/50" %>
+              <% end %>
+              <%= button_to "Eliminar foto", staff_course_photo_path(@course, photo), method: :delete, form: { data: { turbo_confirm: "¿Eliminar esta foto?" } }, class: "text-sm text-red-700 underline" %>
+            </li>
+          <% end %>
+        </ul>
+      <% else %>
+        <p class="mt-2 text-sm text-slate-600">Sin fotos.</p>
+      <% end %>
+    </section>
+
+    <section class="mt-8 rounded-lg border border-arrecife/50 bg-espuma/40 p-4">
+      <h2 class="text-sm font-medium text-profundo">Cambiar estado</h2>
+      <div class="mt-3 flex flex-wrap gap-2">
+        <% if @course.program_planning? %>
+          <%= button_to "Publicar (abierto)", publish_staff_course_path(@course), method: :post, class: "rounded bg-oceano px-3 py-1.5 text-sm font-medium text-white hover:bg-profundo" %>
+        <% end %>
+        <% if @course.program_pending_confirmation? %>
+          <%= button_to "Confirmar programa", confirm_staff_course_path(@course), method: :post, class: "rounded bg-coral px-3 py-1.5 text-sm font-medium text-white hover:bg-coral-hover" %>
+        <% end %>
+      </div>
+
+      <% unless @course.program_cancelled? %>
+        <%= form_with url: cancel_staff_course_path(@course), method: :post, local: true, class: "mt-4 space-y-2" do %>
+          <label class="block text-sm text-abismo/80">Cancelar programa (indica motivo)</label>
+          <%= text_area_tag :cancellation_reason, nil, rows: 2, class: "w-full rounded-lg border border-slate-300 bg-white px-2 py-1.5 text-sm", placeholder: "Motivo visible para el equipo" %>
+          <%= submit_tag "Cancelar programa", class: "rounded bg-red-700 px-3 py-1.5 text-sm text-white hover:bg-red-800" %>
+        <% end %>
+      <% end %>
+    </section>
+  </div>
+
+  <p>
+    <%= link_to "← Lista de cursos", staff_courses_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+  </p>
+</div>

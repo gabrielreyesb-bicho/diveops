@@ -1,0 +1,117 @@
+<%= form_with model: [:staff, dive_trip],
+              html: { class: "space-y-4 w-full", multipart: true, novalidate: true },
+              data: { turbo: false } do |f| %>
+  <% if dive_trip.errors.any? %>
+    <div class="rounded border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+      <ul class="list-disc pl-5">
+        <% dive_trip.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :title, "Nombre del plan", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.text_field :title, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <div>
+    <%= f.label :destination, "Destino", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.text_area :destination, rows: 2, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div>
+      <%= f.label :departure_date, "Fecha de salida", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.date_field :departure_date, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+    </div>
+    <div>
+      <%= f.label :return_date, "Fecha de regreso", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.date_field :return_date, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 gap-4 sm:grid-cols-2">
+    <div>
+      <%= f.label :min_capacity, "Cupo mínimo (quorum)", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.number_field :min_capacity, min: 1, step: 1, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+    </div>
+    <div>
+      <%= f.label :max_capacity, "Cupo máximo", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.number_field :max_capacity, min: 1, step: 1, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+    </div>
+  </div>
+
+  <div>
+    <%= f.label :base_price, "Precio base", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.number_field :base_price, min: 0, step: "0.01", class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <div>
+    <%= f.label :status, "Estado", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.select :status, DiveTrip.statuses.keys.map { |k| [ t("activerecord.enums.dive_trip.status.#{k}", default: k.to_s.humanize), k ] }, {}, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <div>
+    <%= f.label :description, "Descripción", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.rich_text_area :description, class: "mt-1 w-full" %>
+  </div>
+
+  <div>
+    <%= f.label :requirements, "Requisitos", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.rich_text_area :requirements, class: "mt-1 w-full" %>
+  </div>
+
+  <div>
+    <%= f.label :itinerary, "Itinerario", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.rich_text_area :itinerary, class: "mt-1 w-full" %>
+  </div>
+
+  <div>
+    <%= f.label :cancellation_reason, "Motivo de cancelación (si aplica)", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.text_area :cancellation_reason, rows: 2, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <div data-controller="multi-file-preview">
+    <% if dive_trip.persisted? %>
+      <% saved_photos = dive_trip.photos.includes(image_attachment: :blob).order(:position).select { |p| p.image.attached? } %>
+      <% if saved_photos.any? %>
+        <div class="mb-4">
+          <span class="block text-sm font-medium text-slate-700">Fotos guardadas</span>
+          <p class="mt-1 text-xs text-slate-500">Las nuevas imágenes que elijas se sumarán al guardar.</p>
+          <ul class="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 md:grid-cols-4" role="list">
+            <% saved_photos.each do |photo| %>
+              <li class="overflow-hidden rounded-lg border border-arrecife/60 bg-white shadow-sm ring-1 ring-arrecife/40">
+                <%= image_tag photo.image.variant(resize_to_limit: [160, 160]), class: "h-28 w-full object-cover", alt: "" %>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+      <% end %>
+    <% end %>
+
+    <span class="block text-sm font-medium text-slate-700"><%= dive_trip.persisted? ? "Añadir más fotos" : "Añadir fotos" %></span>
+    <div class="mt-2">
+      <label class="inline-flex w-fit cursor-pointer items-center justify-center gap-2 rounded-lg border-2 border-oceano bg-white px-4 py-2 text-sm font-medium text-oceano shadow-sm transition hover:bg-espuma hover:text-profundo focus-within:outline focus-within:outline-2 focus-within:outline-offset-2 focus-within:outline-oceano">
+        <%= f.file_field :images,
+                         multiple: true,
+                         accept: "image/*",
+                         class: "sr-only",
+                         data: {
+                           multi_file_preview_target: "input",
+                           action: "change->multi-file-preview#preview"
+                         },
+                         aria: { describedby: "staff_dive_trip_images_hint" } %>
+        <span aria-hidden="true">Elegir imágenes</span>
+      </label>
+    </div>
+    <p id="staff_dive_trip_images_hint" class="mt-2 text-xs text-slate-500">Puedes seleccionar varias imágenes (JPEG, PNG, etc.).</p>
+    <div data-multi-file-preview-target="list" class="min-h-0"></div>
+  </div>
+
+  <div class="flex gap-3 pt-2">
+    <%= f.submit dive_trip.new_record? ? "Crear viaje" : "Guardar cambios", class: "rounded bg-profundo px-4 py-2 text-sm font-medium text-espuma hover:bg-abismo" %>
+    <%= link_to "Cancelar", dive_trip.new_record? ? staff_dive_trips_path : staff_dive_trip_path(dive_trip), class: "rounded border border-slate-300 px-4 py-2 text-sm" %>
+  </div>
+<% end %>

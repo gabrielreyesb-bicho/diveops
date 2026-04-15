@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/* Incluir vistas y helpers para que las utilidades en .erb generen CSS (evita clases “fantasma”). */
+@source "../../views/**/*.html.erb";
+@source "../../helpers/**/*.rb";
+
+/* DiveOps — paleta de marca (Abismo, Profundo, Océano, Caribe, Arrecife, Espuma, Coral) */
+@theme {
+  --color-abismo: #042c53;
+  --color-profundo: #0c447c;
+  --color-oceano: #185fa5;
+  --color-caribe: #378add;
+  --color-arrecife: #85b7eb;
+  --color-espuma: #f0f6fc;
+  --color-coral: #d85a30;
+  --color-coral-hover: #b84920;
+
+  /* Compat / semántica */
+  --color-reef-light: var(--color-espuma);
+  --color-program-trip: var(--color-oceano);
+  --color-program-course: var(--color-caribe);
+}

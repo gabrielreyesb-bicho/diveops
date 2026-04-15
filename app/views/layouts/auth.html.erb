@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title><%= content_for(:title).presence || "DiveOps" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#F0F6FC">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
+    <%= render "layouts/body_texture_styles" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body class="min-h-screen bg-espuma antialiased text-abismo">
+    <div class="flex min-h-screen flex-col px-4 py-10 sm:px-6 sm:py-14">
+      <header class="mb-8 flex flex-col items-center text-center">
+        <%= link_to root_path, class: "group inline-flex items-center gap-2 rounded-lg px-2 py-1 text-abismo transition hover:opacity-90", aria: { label: "DiveOps — inicio" } do %>
+          <%= image_tag "/logo1.png", alt: "DiveOps", class: "h-20 w-auto max-w-[min(320px,92vw)] object-contain sm:h-24" %>
+        <% end %>
+        <% if content_for(:auth_tagline).present? %>
+          <p class="mt-2 max-w-sm text-sm text-profundo"><%= content_for :auth_tagline %></p>
+        <% end %>
+      </header>
+
+      <% flash.each do |key, message| %>
+        <div
+          role="status"
+          class="mx-auto mb-6 w-full max-w-md rounded-xl border px-4 py-3 text-sm shadow-md <%= key == 'alert' ? 'border-coral bg-coral/10 text-abismo' : 'border-oceano bg-arrecife/35 text-abismo' %>"
+        >
+          <%= message %>
+        </div>
+      <% end %>
+
+      <main class="mx-auto w-full max-w-md flex-1">
+        <div class="rounded-2xl border border-arrecife bg-white p-8 shadow-xl ring-1 ring-arrecife/80 backdrop-blur-sm">
+          <%= yield %>
+        </div>
+      </main>
+
+      <footer class="mx-auto mt-10 max-w-md text-center text-xs text-profundo">
+        <%= link_to "Volver al inicio", root_path, class: "font-medium text-caribe underline decoration-arrecife underline-offset-2 hover:text-oceano" %>
+      </footer>
+    </div>
+  </body>
+</html>

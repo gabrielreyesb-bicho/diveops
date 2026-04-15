@@ -1,0 +1,38 @@
+<div class="mx-auto max-w-4xl">
+  <h1 class="text-xl font-semibold text-slate-900">Mis inscripciones</h1>
+  <p class="mt-2 text-sm text-slate-600">Programas en los que te has inscrito.</p>
+
+  <% if @registrations.blank? %>
+    <p class="mt-8 text-sm text-slate-600">Aún no tienes inscripciones.</p>
+  <% else %>
+    <ul class="mt-8 divide-y divide-slate-200 rounded border border-slate-200 bg-white">
+      <% @registrations.each do |reg| %>
+        <% program = reg.program %>
+        <% show_path = program.is_a?(DiveTrip) ? trip_path(program) : course_path(program) %>
+        <li class="flex flex-wrap items-start justify-between gap-4 px-4 py-4">
+          <div>
+            <p class="font-medium text-slate-900">
+              <%= link_to program.title, show_path, class: "hover:underline" %>
+              <span class="text-slate-500">· <%= program.is_a?(DiveTrip) ? "Viaje" : "Curso" %></span>
+            </p>
+            <p class="mt-1 text-sm text-slate-600">
+              <% if program.is_a?(DiveTrip) %>
+                <%= program.departure_date&.strftime("%Y-%m-%d") %> → <%= program.return_date&.strftime("%Y-%m-%d") %>
+              <% else %>
+                <%= program.start_date&.strftime("%Y-%m-%d") %> → <%= program.end_date&.strftime("%Y-%m-%d") %>
+              <% end %>
+            </p>
+            <p class="mt-1 text-xs text-slate-500">Inscripción: <%= reg.created_at.strftime("%Y-%m-%d %H:%M") %></p>
+          </div>
+          <span class="rounded px-2 py-0.5 text-xs font-medium <%= registration_status_badge_class(reg.status) %>">
+            <%= registration_status_text(reg) %>
+          </span>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <p class="mt-8">
+    <%= link_to "← Catálogo", programs_path, class: "text-sm text-caribe underline" %>
+  </p>
+</div>

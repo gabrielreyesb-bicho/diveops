@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <title><%= content_for(:title).presence || "DiveOps" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="DiveOps">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="theme-color" content="#F0F6FC">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+
+    <%= yield :head %>
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
+    <%# Includes all stylesheet files in app/assets/stylesheets %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= stylesheet_link_tag "actiontext", "data-turbo-track": "reload" %>
+    <%= render "layouts/body_texture_styles" %>
+    <%= javascript_importmap_tags %>
+  </head>
+
+  <body class="min-h-screen bg-espuma antialiased text-abismo">
+    <nav class="flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-abismo/30 bg-abismo/45 px-5 py-4 text-sm text-white shadow-md backdrop-blur-[8px] [&_a]:text-white [&_button]:text-white">
+      <div class="flex min-w-0 flex-1 flex-wrap items-center gap-x-4 gap-y-2">
+        <%= link_to root_path, class: "inline-flex shrink-0 items-center gap-2.5 no-underline transition hover:opacity-95" do %>
+          <%= image_tag "logo.png", alt: "", class: "h-12 w-auto shrink-0" %>
+          <span class="text-lg font-semibold tracking-tight text-white">DiveOps</span>
+        <% end %>
+        <% if diver_signed_in? %>
+          <%= link_to "Inicio", root_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
+          <%= link_to "Catálogo", programs_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
+          <%= link_to "Mis inscripciones", my_registrations_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
+        <% end %>
+        <% if user_signed_in? %>
+          <% if diver_signed_in? %>
+            <span class="hidden text-arrecife/80 sm:inline" aria-hidden="true">|</span>
+          <% end %>
+          <%= link_to "Panel agencia", staff_root_path, class: "font-medium text-white underline decoration-white/40 hover:text-arrecife" %>
+        <% end %>
+      </div>
+      <% if diver_signed_in? || user_signed_in? %>
+        <div class="flex w-full flex-shrink-0 flex-wrap items-center justify-end gap-x-4 gap-y-2 sm:ml-auto sm:w-auto">
+          <% if diver_signed_in? %>
+            <%= button_to "Cerrar sesión (#{current_diver.name})", destroy_diver_session_path, method: :delete, class: "cursor-pointer bg-transparent text-right text-white underline decoration-white/40 hover:text-arrecife" %>
+          <% end %>
+          <% if user_signed_in? %>
+            <%= button_to "Cerrar sesión (#{current_user.name})", destroy_user_session_path, method: :delete, class: "cursor-pointer bg-transparent text-right text-white underline decoration-white/40 hover:text-arrecife" %>
+          <% end %>
+        </div>
+      <% end %>
+      <% unless user_signed_in? || diver_signed_in? %>
+        <div class="flex w-full flex-wrap items-center gap-x-4 gap-y-2 sm:ml-auto sm:w-auto sm:justify-end">
+          <%= link_to "Inicio de sesión — buzo", new_diver_session_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
+          <%= link_to "Inicio de sesión — staff de agencia", new_user_session_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
+        </div>
+      <% end %>
+    </nav>
+
+    <% flash.each do |key, message| %>
+      <div
+        class="container mx-auto mt-4 max-w-3xl px-5 text-sm <%= key == "alert" ? "rounded-xl border border-coral bg-coral/10 px-4 py-3 text-abismo" : "rounded-xl border border-oceano bg-arrecife/35 px-4 py-3 text-abismo" %>"
+        role="status"
+      >
+        <%= message %>
+      </div>
+    <% end %>
+
+    <main class="container mx-auto mt-8 px-5 pb-16">
+      <%= yield %>
+    </main>
+  </body>
+</html>

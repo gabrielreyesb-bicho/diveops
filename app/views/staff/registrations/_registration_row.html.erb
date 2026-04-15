@@ -1,0 +1,26 @@
+<%# locals: registration %>
+<% program = registration.program %>
+<% program_staff_url = program.is_a?(DiveTrip) ? staff_dive_trip_path(program) : staff_course_path(program) %>
+<tr class="border-t border-slate-200 text-sm">
+  <td class="px-3 py-2"><%= registration.diver.name %></td>
+  <td class="px-3 py-2">
+    <%= program.is_a?(DiveTrip) ? "Viaje" : "Curso" %> ·
+    <%= link_to program.title, program_staff_url, class: "text-caribe underline" %>
+  </td>
+  <td class="px-3 py-2 whitespace-nowrap"><%= registration.created_at.strftime("%Y-%m-%d %H:%M") %></td>
+  <td class="px-3 py-2">
+    <span class="rounded px-2 py-0.5 text-xs font-medium <%= registration_status_badge_class(registration.status) %>">
+      <%= registration_status_text(registration) %>
+    </span>
+  </td>
+  <td class="px-3 py-2">
+    <div class="flex flex-wrap gap-2">
+      <%= button_to "Confirmar", confirm_staff_registration_path(registration), method: :patch, class: "text-xs text-green-800 underline" %>
+      <%= button_to "Lista de espera", waitlist_staff_registration_path(registration), method: :patch, class: "text-xs text-coral underline hover:text-profundo" %>
+      <%= form_with url: cancel_staff_registration_path(registration), method: :patch, local: true, class: "inline-flex flex-wrap items-center gap-1" do %>
+        <%= text_field_tag :notes, nil, placeholder: "nota", class: "w-24 rounded border border-slate-300 px-1 text-xs" %>
+        <%= submit_tag "Cancelar", class: "text-xs text-red-700 underline" %>
+      <% end %>
+    </div>
+  </td>
+</tr>

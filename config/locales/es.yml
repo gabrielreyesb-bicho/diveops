@@ -1,0 +1,25 @@
+es:
+  activerecord:
+    enums:
+      dive_trip:
+        status:
+          planning: En planificación
+          open: Abierto
+          full: Completo
+          pending_confirmation: Pendiente de confirmación
+          confirmed: Confirmado
+          cancelled: Cancelado
+      course:
+        status:
+          planning: En planificación
+          open: Abierto
+          full: Completo
+          pending_confirmation: Pendiente de confirmación
+          confirmed: Confirmado
+          cancelled: Cancelado
+      registration:
+        status:
+          pending: Pendiente
+          confirmed: Confirmada
+          waitlisted: En lista de espera
+          cancelled: Cancelada

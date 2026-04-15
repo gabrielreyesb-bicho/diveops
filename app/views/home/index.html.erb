@@ -1,0 +1,146 @@
+<% content_for :title, "Deepsoul · Viajes y cursos de buceo en Guadalajara" %>
+
+<%# Hero: imagen impactante (arrecife / buceo) — si no convence, sustituir la URL %>
+<% hero_image = "https://images.unsplash.com/photo-1544551763-46a013bb70d5?auto=format&fit=crop&w=2400&q=85" %>
+<%# Grupo en embarcación listo para bucear (Unsplash — verificado 200) %>
+<% about_image = "https://images.unsplash.com/photo-1741276884810-e7a08b1efd41?auto=format&fit=crop&w=1200&q=85" %>
+
+<div class="landing overflow-x-hidden pb-8">
+  <%# Aire bajo el navbar (fondo espuma / patrón a todo el ancho) %>
+  <div class="h-5 w-screen max-w-[100vw] shrink-0 sm:h-7 ml-[calc(50%-50vw)]" aria-hidden="true"></div>
+
+  <%# ——— 1. Hero (compacto, full bleed) ——— %>
+  <%# Encuadre hacia la izquierda (arrecife / peces) para que el buzo a la derecha no domine el encuadre %>
+  <section
+    class="relative flex min-h-[38vh] max-h-[min(380px,52vh)] w-screen max-w-[100vw] flex-col items-center justify-center bg-cover bg-no-repeat bg-[position:18%_center] sm:min-h-[40vh] sm:max-h-[min(440px,48vh)] sm:bg-[position:22%_center] ml-[calc(50%-50vw)]"
+    style="background-image: url('<%= hero_image %>')"
+  >
+    <div class="absolute inset-0 bg-abismo/65" aria-hidden="true"></div>
+    <div class="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-5 py-8 text-center sm:py-10">
+      <h1 class="text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-sm sm:text-4xl md:text-5xl">
+        Descubre tu próxima inmersión
+      </h1>
+      <p class="mt-4 max-w-2xl text-base text-white/95 sm:text-lg">
+        Viajes y cursos de buceo desde Guadalajara
+      </p>
+      <%= link_to "Ver próximos viajes", programs_path, class: "mt-7 inline-flex items-center justify-center rounded-xl bg-coral px-7 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-coral-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-white focus-visible:ring-offset-2 focus-visible:ring-offset-abismo/80 sm:mt-8 sm:px-8 sm:text-base" %>
+    </div>
+  </section>
+
+  <%# ——— 2. Próximos programas (mismo grid de cards, máx. 3) ——— %>
+  <div class="mx-auto max-w-6xl px-4 pt-16 sm:px-6">
+    <h2 class="text-2xl font-semibold text-profundo md:text-3xl">Próximos programas</h2>
+
+    <% if @agency.present? && @featured.present? %>
+      <div class="mt-8 grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <% @featured.each do |item| %>
+          <% p = item[:record] %>
+          <%= render "programs/card",
+                     item: item,
+                     registration: @card_registrations&.[]([ p.class.name, p.id ]) %>
+        <% end %>
+      </div>
+    <% elsif @agency.blank? %>
+      <p class="mt-8 text-sm font-medium text-coral">Aún no hay agencia configurada en el sistema.</p>
+    <% else %>
+      <p class="mt-8 text-slate-600">Pronto publicaremos salidas y cursos. Mientras tanto, podés explorar el catálogo.</p>
+    <% end %>
+
+    <p class="mt-10">
+      <%= link_to "Ver catálogo completo", programs_path, class: "font-medium text-oceano underline decoration-oceano/40 underline-offset-2 transition hover:text-profundo" %>
+    </p>
+  </div>
+
+  <%# ——— 3. ¿Por qué Deepsoul? (Océano #185FA5, texto blanco) ——— %>
+  <section class="mt-20 w-screen max-w-[100vw] py-16 text-white ml-[calc(50%-50vw)] bg-oceano">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <h2 class="text-center text-2xl font-semibold md:text-3xl">¿Por qué Deepsoul?</h2>
+      <p class="mx-auto mt-3 max-w-2xl text-center text-sm text-white/90 sm:text-base">
+        Sumamos años de experiencia en el agua con un trato cercano, para que cada buceo sea seguro y memorable.
+      </p>
+      <div class="mt-12 grid gap-10 sm:grid-cols-3 sm:gap-8">
+        <div class="flex flex-col items-center text-center">
+          <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-3xl backdrop-blur-sm" aria-hidden="true">🎓</span>
+          <h3 class="mt-4 text-lg font-semibold">Instructores certificados PADI</h3>
+          <p class="mt-2 text-sm leading-relaxed text-white/90">
+            Equipo con formación oficial y estándares claros de seguridad en cada inmersión y en el aula.
+          </p>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-3xl backdrop-blur-sm" aria-hidden="true">🤿</span>
+          <h3 class="mt-4 text-lg font-semibold">Grupos pequeños y personalizados</h3>
+          <p class="mt-2 text-sm leading-relaxed text-white/90">
+            Atendemos pocos buzos por salida para que recibas acompañamiento real, sin sentirte “un número más”.
+          </p>
+        </div>
+        <div class="flex flex-col items-center text-center">
+          <span class="flex h-14 w-14 items-center justify-center rounded-2xl bg-white/15 text-3xl backdrop-blur-sm" aria-hidden="true">🌊</span>
+          <h3 class="mt-4 text-lg font-semibold">Destinos en México y el Caribe</h3>
+          <p class="mt-2 text-sm leading-relaxed text-white/90">
+            Armamos viajes a arrecifes y cuevas inolvidables: desde el Pacífico hasta el mar Caribe.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <%# ——— 4. Quiénes somos ——— %>
+  <section class="mx-auto max-w-6xl px-4 py-20 sm:px-6">
+    <div class="grid items-center gap-10 md:grid-cols-2 md:gap-14">
+      <div>
+        <h2 class="text-2xl font-semibold text-profundo md:text-3xl">Quiénes somos</h2>
+        <div class="mt-6 space-y-4 text-base leading-relaxed text-abismo/90">
+          <p>
+            <strong class="text-abismo">Deepsoul</strong> nació en Guadalajara como un espacio para quienes quieren ir más allá del snorkel: viajes organizados, cursos desde Open Water hasta especialidades, y un equipo que comparte la pasión por el agua.
+          </p>
+          <p>
+            Nos importa la comunidad, la seguridad y disfrutar cada metro con calma. Si recién empezás o querés profundizar tu perfil, acá vas a encontrar gente que habla claro y te acompaña en cada paso.
+          </p>
+          <p class="text-sm text-slate-600">
+            (Texto editable: reemplazá este bloque con la historia oficial de la agencia cuando quieras.)
+          </p>
+        </div>
+      </div>
+      <div class="overflow-hidden rounded-2xl border border-arrecife/50 shadow-lg ring-1 ring-arrecife/40">
+        <%= image_tag about_image, alt: "Equipo de buzos en embarcación, listos para la salida", class: "h-full w-full object-cover object-center aspect-[4/3] md:min-h-[280px]", loading: "lazy", decoding: "async" %>
+      </div>
+    </div>
+  </section>
+
+  <%# ——— 5. Testimonios (fondo espuma #E6F1FB) ——— %>
+  <section class="mt-4 w-screen max-w-[100vw] py-16 ml-[calc(50%-50vw)] bg-[#E6F1FB]">
+    <div class="mx-auto max-w-6xl px-4 sm:px-6">
+      <h2 class="text-center text-2xl font-semibold text-abismo md:text-3xl">Lo que dicen nuestros buzos</h2>
+      <p class="mx-auto mt-2 max-w-xl text-center text-sm text-abismo/75">Opiniones reales de quienes ya se animaron al agua con nosotros.</p>
+      <div class="mt-10 grid gap-6 md:grid-cols-3">
+        <blockquote class="flex h-full flex-col rounded-xl border border-abismo/10 bg-white/90 p-6 shadow-sm">
+          <p class="flex-1 text-sm leading-relaxed text-abismo/90">
+            “Salida impecable: equipo en buen estado, briefing claro y un grupo chico que se nota. Ya estoy viendo el próximo viaje.”
+          </p>
+          <footer class="mt-4 border-t border-arrecife/40 pt-4">
+            <p class="font-semibold text-abismo">Laura M.</p>
+            <p class="text-xs text-profundo">PADI Advanced Open Water</p>
+          </footer>
+        </blockquote>
+        <blockquote class="flex h-full flex-col rounded-xl border border-abismo/10 bg-white/90 p-6 shadow-sm">
+          <p class="flex-1 text-sm leading-relaxed text-abismo/90">
+            “Hice el curso de profundo con Deepsoul y me sentí acompañado en todo momento. Explicaciones pacientes y buen ambiente.”
+          </p>
+          <footer class="mt-4 border-t border-arrecife/40 pt-4">
+            <p class="font-semibold text-abismo">Andrés G.</p>
+            <p class="text-xs text-profundo">PADI Deep Diver</p>
+          </footer>
+        </blockquote>
+        <blockquote class="flex h-full flex-col rounded-xl border border-abismo/10 bg-white/90 p-6 shadow-sm">
+          <p class="flex-1 text-sm leading-relaxed text-abismo/90">
+            “Mi primer viaje internacional de buceo fue con ellos. Logística tranquila y buena onda en el barco. ¡Repetiría!”
+          </p>
+          <footer class="mt-4 border-t border-arrecife/40 pt-4">
+            <p class="font-semibold text-abismo">Sofía R.</p>
+            <p class="text-xs text-profundo">PADI Open Water</p>
+          </footer>
+        </blockquote>
+      </div>
+    </div>
+  </section>
+</div>

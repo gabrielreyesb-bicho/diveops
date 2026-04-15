@@ -1,0 +1,35 @@
+<div class="mx-auto max-w-5xl">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-profundo">Panel de agencia</h1>
+      <p class="mt-1 text-abismo/80"><%= current_agency.name %></p>
+    </div>
+    <div class="flex flex-wrap items-center gap-3 sm:justify-end">
+      <%= link_to "Nuevo viaje", new_staff_dive_trip_path, class: "inline-flex items-center justify-center rounded-lg border-2 border-oceano bg-white px-4 py-2 text-sm font-medium text-oceano shadow-sm transition hover:bg-espuma hover:text-profundo" %>
+      <%= link_to "Nuevo curso", new_staff_course_path, class: "inline-flex items-center justify-center rounded-lg border-2 border-caribe bg-white px-4 py-2 text-sm font-medium text-caribe shadow-sm transition hover:bg-espuma hover:text-profundo" %>
+      <%= link_to "Ver catálogo público", programs_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+    </div>
+  </div>
+
+  <% if @program_items.blank? %>
+    <p class="mt-8 rounded-xl border border-arrecife bg-white p-6 text-slate-600 shadow-sm">
+      Aún no hay viajes ni cursos.
+      <%= link_to "Creá un viaje", new_staff_dive_trip_path, class: "font-medium text-oceano underline decoration-oceano/40 hover:text-profundo" %>
+      o
+      <%= link_to "un curso", new_staff_course_path, class: "font-medium text-oceano underline decoration-oceano/40 hover:text-profundo" %>
+      para publicarlo en el catálogo.
+    </p>
+  <% else %>
+    <div class="mt-8 space-y-6">
+      <% @program_items.each do |item| %>
+        <%= render "staff/dashboard/program_summary_card", item: item %>
+      <% end %>
+    </div>
+  <% end %>
+
+  <ul class="mt-10 flex flex-wrap gap-x-6 gap-y-2 text-sm text-abismo">
+    <li><%= link_to "Todas las inscripciones", staff_registrations_path, class: "text-caribe underline decoration-caribe/40 hover:text-oceano" %></li>
+    <li><%= link_to "Viajes (lista)", staff_dive_trips_path, class: "text-caribe underline decoration-caribe/40 hover:text-oceano" %></li>
+    <li><%= link_to "Cursos (lista)", staff_courses_path, class: "text-caribe underline decoration-caribe/40 hover:text-oceano" %></li>
+  </ul>
+</div>

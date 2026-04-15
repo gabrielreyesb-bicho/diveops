@@ -1,0 +1,49 @@
+<div class="mx-auto max-w-6xl">
+  <h1 class="text-2xl font-semibold text-profundo">Catálogo de programas</h1>
+
+  <% if @agency.blank? %>
+    <p class="mt-6 text-slate-600">No hay agencia configurada todavía.</p>
+  <% else %>
+    <%= form_with url: programs_path, method: :get, local: true, class: "mt-6 flex flex-wrap items-end gap-4 rounded border border-arrecife bg-white/80 p-4 shadow-sm" do %>
+      <div>
+        <%= label_tag :type, "Tipo", class: "block text-xs font-medium text-slate-600" %>
+        <%= select_tag :type,
+                       options_for_select([ [ "Todos", "" ], [ "Viaje", "trip" ], [ "Curso", "course" ] ], params[:type]),
+                       class: "mt-1 rounded border border-slate-300 px-2 py-1 text-sm" %>
+      </div>
+      <div>
+        <%= label_tag :month, "Mes", class: "block text-xs font-medium text-slate-600" %>
+        <%= select_tag :month,
+                       options_for_select(catalog_month_filter_options, params[:month]),
+                       class: "mt-1 rounded border border-slate-300 px-2 py-1 text-sm" %>
+      </div>
+      <div>
+        <%= label_tag :status, "Estado", class: "block text-xs font-medium text-slate-600" %>
+        <%= select_tag :status,
+                       options_for_select(catalog_status_filter_options, params[:status]),
+                       class: "mt-1 rounded border border-slate-300 px-2 py-1 text-sm" %>
+      </div>
+      <div>
+        <%= submit_tag "Filtrar", class: "rounded bg-profundo px-4 py-1.5 text-sm font-medium text-espuma hover:bg-abismo" %>
+        <%= link_to "Limpiar", programs_path, class: "ml-2 text-sm text-caribe underline" %>
+      </div>
+    <% end %>
+
+    <% if @program_items.blank? %>
+      <p class="mt-8 text-slate-600">No hay programas con esos criterios.</p>
+    <% else %>
+      <div class="mt-8 grid auto-rows-fr gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <% @program_items.each do |item| %>
+          <% p = item[:record] %>
+          <%= render "programs/card",
+                     item: item,
+                     registration: @card_registrations&.[]([ p.class.name, p.id ]) %>
+        <% end %>
+      </div>
+    <% end %>
+  <% end %>
+
+  <p class="mt-10">
+    <%= link_to "← Inicio", root_path, class: "text-caribe underline" %>
+  </p>
+</div>
