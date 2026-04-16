@@ -1,0 +1,12 @@
+Hola <%= @registration.diver.name.split.first %>,
+
+Tu inscripción al programa <%= program_display_name(@program) %> ha sido cancelada.
+<% if @reason.present? %>
+
+Motivo: <%= @reason %>
+<% end %>
+
+Si esto fue un error o quieres inscribirte de nuevo, entra a Deepsoul o escríbenos a hola@deepsoul.mx.
+
+Saludos,
+El equipo de Deepsoul

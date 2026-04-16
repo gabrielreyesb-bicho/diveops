@@ -23,22 +23,16 @@ class RegistrationsController < ApplicationController
     status = program.registration_slots_available? ? :pending : :waitlisted
 
     begin
-      Registration.create!(
+      registration = Registration.create!(
         { diver: current_diver, program: program, status: status }.merge(utm_attributes_for_registration)
       )
+      DiverMailer.registration_received(registration).deliver_later
     rescue ActiveRecord::RecordNotUnique
       redirect_to program_public_path(program), alert: "Ya estás inscrito en este programa."
       return
     end
 
-    notice =
-      if status == :pending
-        "Inscripción recibida (pendiente de confirmación)."
-      else
-        "No hay cupo disponible; quedaste en lista de espera."
-      end
-
-    redirect_to program_public_path(program), notice: notice
+    redirect_to program_public_path(program)
   end
 
   private

@@ -1,0 +1,35 @@
+<%# locals: registration %>
+<% diver = registration.diver %>
+<% st = registration.status.to_s %>
+<tr class="border-t border-arrecife/40 bg-white align-top text-sm text-abismo">
+  <td class="px-3 py-3">
+    <div class="flex items-start gap-3">
+      <%= staff_diver_avatar_or_initials(diver, size: :sm) %>
+      <div class="min-w-0">
+        <div class="font-medium leading-tight"><%= diver.name %></div>
+        <div class="mt-0.5 truncate text-xs text-slate-600"><%= diver.email %></div>
+      </div>
+    </div>
+  </td>
+  <td class="px-3 py-3 text-slate-700"><%= diver_certification_level_text(diver) %></td>
+  <td class="whitespace-nowrap px-3 py-3 text-slate-700"><%= registration.created_at.strftime("%d/%m/%Y %H:%M") %></td>
+  <td class="px-3 py-3">
+    <span class="inline-flex min-h-8 items-center rounded-lg px-3 py-1.5 text-xs font-medium <%= staff_registration_status_badge_class(st) %>">
+      <%= staff_registration_status_label(registration) %>
+    </span>
+  </td>
+  <td class="px-3 py-3">
+    <div class="flex flex-wrap items-center gap-2">
+      <% if st == "pending" %>
+        <%= button_to "Confirmar", confirm_staff_registration_path(registration), method: :patch, class: staff_registration_btn_confirm_class %>
+        <%= render "staff/registrations/cancel_control", registration: registration %>
+      <% elsif st == "confirmed" %>
+        <%= button_to "En espera", waitlist_staff_registration_path(registration), method: :patch, class: staff_registration_btn_waitlist_class %>
+        <%= render "staff/registrations/cancel_control", registration: registration %>
+      <% elsif st == "waitlisted" %>
+        <%= button_to "Confirmar", confirm_staff_registration_path(registration), method: :patch, class: staff_registration_btn_confirm_class %>
+        <%= render "staff/registrations/cancel_control", registration: registration %>
+      <% end %>
+    </div>
+  </td>
+</tr>

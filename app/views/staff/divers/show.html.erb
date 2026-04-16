@@ -1,0 +1,82 @@
+<% content_for :title, "#{@diver.name} · Buzos · DiveOps" %>
+
+<div class="mx-auto max-w-3xl space-y-6">
+  <div class="flex flex-wrap items-center justify-between gap-4">
+    <%= link_to "← Volver al listado de buzos", staff_divers_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+    <%= link_to "Panel de agencia", staff_root_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+  </div>
+
+  <div class="overflow-hidden rounded-xl border border-arrecife/60 bg-white p-6 shadow-md ring-1 ring-arrecife/60 sm:p-8">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-start">
+      <div class="flex shrink-0 justify-center sm:justify-start">
+        <%= staff_diver_avatar_or_initials(@diver, size: :md) %>
+      </div>
+      <div class="min-w-0 flex-1">
+        <h1 class="text-2xl font-semibold text-profundo"><%= @diver.name %></h1>
+        <p class="mt-1 text-sm text-abismo/80"><%= @diver.email %></p>
+        <% if @diver.phone.present? %>
+          <p class="mt-1 text-sm text-abismo/80"><span class="text-abismo/60">Teléfono:</span> <%= @diver.phone %></p>
+        <% end %>
+
+        <dl class="mt-6 grid gap-3 text-sm sm:grid-cols-[minmax(0,10rem)_1fr] sm:gap-x-4">
+          <dt class="text-abismo/60">Certificación</dt>
+          <dd class="font-medium text-abismo"><%= diver_certification_level_text(@diver) %></dd>
+          <dt class="text-abismo/60">Inmersiones (autorreportadas)</dt>
+          <dd class="font-medium text-abismo"><%= @diver.dive_count.present? ? @diver.dive_count : "—" %></dd>
+          <dt class="text-abismo/60">Acceso a la cuenta</dt>
+          <dd class="font-medium text-abismo"><%= staff_diver_provider_label(@diver) %></dd>
+          <dt class="text-abismo/60">Privacidad en catálogo</dt>
+          <dd class="font-medium text-abismo"><%= diver_privacy_label(@diver) %></dd>
+          <dt class="text-abismo/60">Alta en DiveOps</dt>
+          <dd class="font-medium text-abismo"><%= @diver.created_at.strftime("%d/%m/%Y %H:%M") %></dd>
+        </dl>
+      </div>
+    </div>
+  </div>
+
+  <section class="overflow-hidden rounded-xl border border-arrecife/60 bg-white p-6 shadow-md ring-1 ring-arrecife/60 sm:p-8">
+    <h2 class="text-lg font-semibold text-profundo">Inscripciones en <%= current_agency.name %></h2>
+    <% if @registrations.any? %>
+      <ul class="mt-4 divide-y divide-arrecife/40">
+        <% @registrations.each do |reg| %>
+          <% program = reg.program %>
+          <li class="flex flex-col gap-2 py-4 sm:flex-row sm:items-center sm:justify-between">
+            <div>
+              <span class="text-xs font-medium uppercase text-abismo/50"><%= program.is_a?(DiveTrip) ? "Viaje" : "Curso" %></span>
+              <p class="font-medium text-abismo">
+                <%= link_to program.title, staff_program_path_for(program), class: "text-oceano underline decoration-oceano/40 hover:text-profundo" %>
+              </p>
+              <p class="text-xs text-abismo/60"><%= reg.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+            </div>
+            <span class="inline-flex w-fit rounded-lg px-3 py-1.5 text-xs font-medium <%= staff_registration_status_badge_class(reg.status) %>">
+              <%= staff_registration_status_label(reg) %>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-4 text-sm text-abismo/70">Sin inscripciones en los programas de esta agencia.</p>
+    <% end %>
+  </section>
+
+  <section class="overflow-hidden rounded-xl border border-arrecife/60 bg-white p-6 shadow-md ring-1 ring-arrecife/60 sm:p-8">
+    <h2 class="text-lg font-semibold text-profundo">Intereses marcados</h2>
+    <p class="mt-1 text-sm text-abismo/70">Programas en los que mostró interés (sin completar inscripción en ese momento).</p>
+    <% if @interests.any? %>
+      <ul class="mt-4 divide-y divide-arrecife/40">
+        <% @interests.each do |interest| %>
+          <% program = interest.program %>
+          <li class="py-4">
+            <span class="text-xs font-medium uppercase text-abismo/50"><%= program.is_a?(DiveTrip) ? "Viaje" : "Curso" %></span>
+            <p class="font-medium text-abismo">
+              <%= link_to program.title, staff_program_path_for(program), class: "text-oceano underline decoration-oceano/40 hover:text-profundo" %>
+            </p>
+            <p class="text-xs text-abismo/60"><%= interest.created_at.strftime("%d/%m/%Y %H:%M") %></p>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-4 text-sm text-abismo/70">Sin intereses registrados en los programas de esta agencia.</p>
+    <% end %>
+  </section>
+</div>

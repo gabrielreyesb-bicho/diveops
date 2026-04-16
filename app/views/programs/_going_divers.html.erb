@@ -1,0 +1,15 @@
+<%# locals: going (array of Diver), program_label: %>
+<% if going.present? %>
+  <section class="mt-8 rounded border border-slate-200 bg-slate-50 p-4">
+    <h2 class="text-sm font-medium text-slate-700">Quién va</h2>
+    <div class="mt-3 flex flex-wrap items-center gap-3">
+      <% going.each do |diver| %>
+        <span class="flex items-center gap-2 text-sm text-slate-800">
+          <%= diver_avatar_for(diver, variant: :md) %>
+          <span><%= diver.name %></span>
+        </span>
+      <% end %>
+    </div>
+    <p class="mt-3 text-sm text-slate-700"><%= going_sentence(going, program_label: local_assigns[:program_label] || "este programa") %></p>
+  </section>
+<% end %>

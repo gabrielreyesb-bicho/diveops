@@ -2,6 +2,7 @@
 
 class DiveTrip < ApplicationRecord
   include ProgramCapacity
+  include NotifiesDiversWhenPublished
 
   enum :status, {
     planning: 0,

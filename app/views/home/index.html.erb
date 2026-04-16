@@ -12,10 +12,10 @@
   <%# ——— 1. Hero (compacto, full bleed) ——— %>
   <%# Encuadre hacia la izquierda (arrecife / peces) para que el buzo a la derecha no domine el encuadre %>
   <section
-    class="relative flex min-h-[38vh] max-h-[min(380px,52vh)] w-screen max-w-[100vw] flex-col items-center justify-center bg-cover bg-no-repeat bg-[position:18%_center] sm:min-h-[40vh] sm:max-h-[min(440px,48vh)] sm:bg-[position:22%_center] ml-[calc(50%-50vw)]"
+    class="relative z-0 flex min-h-[38vh] max-h-[min(380px,52vh)] w-screen max-w-[100vw] flex-col items-center justify-center bg-cover bg-no-repeat bg-[position:18%_center] sm:min-h-[40vh] sm:max-h-[min(440px,48vh)] sm:bg-[position:22%_center] ml-[calc(50%-50vw)]"
     style="background-image: url('<%= hero_image %>')"
   >
-    <div class="absolute inset-0 bg-abismo/65" aria-hidden="true"></div>
+    <div class="absolute inset-0 z-[1] bg-abismo/65" aria-hidden="true"></div>
     <div class="relative z-10 mx-auto flex w-full max-w-4xl flex-col items-center px-5 py-8 text-center sm:py-10">
       <h1 class="text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-sm sm:text-4xl md:text-5xl">
         Descubre tu próxima inmersión

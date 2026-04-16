@@ -1,0 +1,57 @@
+<% content_for :title, "Mi perfil · DiveOps" %>
+
+<div class="mx-auto max-w-2xl space-y-8">
+  <div class="overflow-hidden rounded-xl border border-arrecife/60 bg-white p-6 shadow-md ring-1 ring-arrecife/60 sm:p-8">
+    <div class="flex flex-col gap-6 sm:flex-row sm:items-start">
+      <div class="flex shrink-0 justify-center sm:justify-start">
+        <%= diver_avatar_for(current_diver, variant: :lg) %>
+      </div>
+      <div class="min-w-0 flex-1">
+        <h1 class="text-2xl font-semibold text-profundo"><%= current_diver.name %></h1>
+        <p class="mt-1 text-sm text-slate-600"><%= current_diver.email %></p>
+        <dl class="mt-4 grid gap-2 text-sm sm:grid-cols-2">
+          <dt class="text-slate-500">Certificación</dt>
+          <dd class="font-medium text-abismo"><%= diver_certification_level_text(current_diver) %></dd>
+          <dt class="text-slate-500">Inmersiones registradas</dt>
+          <dd class="font-medium text-abismo"><%= current_diver.dive_count.present? ? current_diver.dive_count : "—" %></dd>
+        </dl>
+      </div>
+    </div>
+
+    <section class="mt-8 border-t border-arrecife/40 pt-6">
+      <h2 class="text-sm font-semibold text-profundo">Privacidad del perfil</h2>
+      <p class="mt-1 text-sm font-medium text-oceano"><%= diver_privacy_label(current_diver) %></p>
+      <p class="mt-2 text-sm leading-relaxed text-slate-600"><%= diver_privacy_help_text(current_diver) %></p>
+    </section>
+
+    <div class="mt-8">
+      <%= link_to "Editar perfil", edit_diver_profile_path, class: "inline-flex rounded-lg bg-oceano px-4 py-2 text-sm font-medium text-white shadow-sm transition hover:bg-profundo" %>
+    </div>
+  </div>
+
+  <div class="overflow-hidden rounded-xl border border-arrecife/60 bg-white p-6 shadow-md ring-1 ring-arrecife/60 sm:p-8">
+    <div class="flex flex-wrap items-baseline justify-between gap-2">
+      <h2 class="text-lg font-semibold text-profundo">Inscripciones recientes</h2>
+      <%= link_to "Ver todas", my_registrations_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+    </div>
+    <% if @recent_registrations.any? %>
+      <ul class="mt-4 divide-y divide-arrecife/40">
+        <% @recent_registrations.each do |reg| %>
+          <% program = reg.program %>
+          <% path = program.is_a?(DiveTrip) ? trip_path(program) : course_path(program) %>
+          <li class="grid gap-1 py-3 text-sm sm:grid-cols-[1fr_auto] sm:items-center sm:gap-4">
+            <div>
+              <%= link_to program.title, path, class: "font-medium text-abismo underline decoration-caribe/30 hover:text-oceano" %>
+              <p class="text-xs text-slate-500"><%= reg.created_at.strftime("%Y-%m-%d") %></p>
+            </div>
+            <span class="rounded px-2 py-0.5 text-xs font-medium w-fit <%= registration_status_badge_class(reg.status) %>">
+              <%= registration_status_text(reg) %>
+            </span>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="mt-4 text-sm text-slate-600">Aún no tenés inscripciones. Explorá el <%= link_to "catálogo", programs_path, class: "text-caribe underline" %>.</p>
+    <% end %>
+  </div>
+</div>

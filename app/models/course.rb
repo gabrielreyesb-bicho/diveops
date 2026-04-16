@@ -2,6 +2,7 @@
 
 class Course < ApplicationRecord
   include ProgramCapacity
+  include NotifiesDiversWhenPublished
 
   enum :status, {
     planning: 0,

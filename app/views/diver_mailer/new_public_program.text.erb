@@ -1,0 +1,13 @@
+Hola <%= @diver.name.split.first %>,
+
+Hay un nuevo <%= program_kind_label(@program).downcase %> disponible en el catálogo Deepsoul, ofrecido por <%= @agency.name %>.
+
+<%= program_display_name(@program) %>
+Fechas: <%= program_date_range(@program) %>
+
+Ver ficha: <%= @program_url %>
+
+Más programas: <%= programs_url %>
+
+¡Buen día!
+El equipo de Deepsoul

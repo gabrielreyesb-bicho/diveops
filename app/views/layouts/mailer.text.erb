@@ -1,1 +1,11 @@
+Deepsoul
+========
+
 <%= yield %>
+
+<% if defined?(@unsubscribe_url) && @unsubscribe_url.present? %>
+Darse de baja: <%= @unsubscribe_url %>
+
+<% end %>
+--
+Deepsoul · Guadalajara · hola@deepsoul.mx

@@ -21,14 +21,25 @@ module CatalogScoping
     CATALOG_STATUSES.any? { |s| program.public_send("program_#{s}?") }
   end
 
+  # Buzos confirmados visibles según privacidad del perfil y si el visitante está inscrito al mismo programa.
+  def visible_going_divers(program, viewer: nil)
+    confirmed = program.registrations.registration_confirmed.includes(diver: { avatar_attachment: :blob })
+    divers = confirmed.map(&:diver).uniq
+    viewer_enrolled = viewer.is_a?(Diver) &&
+      program.registrations.registration_confirmed.exists?(diver: viewer)
+
+    visible = divers.select do |d|
+      next false if d.profile_private?
+      next true if d.profile_public?
+
+      viewer_enrolled
+    end
+
+    visible.sort_by { |d| d.name.to_s.downcase }
+  end
+
   def public_going_divers(program)
-    program.registrations
-      .registration_confirmed
-      .joins(:diver)
-      .merge(Diver.where(privacy: :public))
-      .includes(:diver)
-      .order("divers.name ASC")
-      .map(&:diver)
+    visible_going_divers(program, viewer: nil)
   end
 
   # Hash [ program_type, program_id ] => Registration para tarjetas del catálogo cuando el buzo está logueado.

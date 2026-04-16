@@ -1,0 +1,11 @@
+<% content_for :title, "Enlace no válido · DiveOps" %>
+
+<div class="mx-auto max-w-lg px-4 py-16">
+  <div class="rounded-xl border border-arrecife/60 bg-white p-8 shadow-md ring-1 ring-arrecife/60">
+    <h1 class="text-xl font-semibold text-profundo">Este enlace ya no es válido</h1>
+    <p class="mt-4 text-slate-700">
+      El enlace de baja expiró o es incorrecto. Podés gestionar los correos desde
+      <%= link_to "tu perfil", (diver_signed_in? ? edit_diver_profile_path : new_diver_session_path), class: "font-medium text-oceano underline hover:text-profundo" %>.
+    </p>
+  </div>
+</div>

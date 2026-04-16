@@ -29,6 +29,24 @@ class Diver < ApplicationRecord
   has_many :registrations, dependent: :destroy
   has_many :interests, dependent: :destroy
 
+  after_create_commit :enqueue_welcome_email
+
+
+  # Buzos con al menos una inscripción o interés en viajes/cursos de esta agencia.
+  def self.for_agency(agency)
+    reg_ids = filter_records_by_agency_programs(Registration.all, agency).distinct.pluck(:diver_id)
+    int_ids = filter_records_by_agency_programs(Interest.all, agency).distinct.pluck(:diver_id)
+    where(id: (reg_ids | int_ids).uniq)
+  end
+
+  def registrations_for_agency(agency)
+    self.class.send(:filter_records_by_agency_programs, registrations, agency)
+  end
+
+  def interests_for_agency(agency)
+    self.class.send(:filter_records_by_agency_programs, interests, agency)
+  end
+
   validates :name, presence: true
   validates :dive_count, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
 
@@ -76,4 +94,23 @@ class Diver < ApplicationRecord
 
     super
   end
+
+  def enqueue_welcome_email
+    DiverMailer.welcome(self).deliver_later
+  end
+
+  # Compatibilidad con nomenclatura explícita (OAuth).
+  alias provider_google? google?
+
+  def self.filter_records_by_agency_programs(relation, agency)
+    trip_ids = agency.dive_trip_ids
+    course_ids = agency.course_ids
+    branches = []
+    branches << relation.where(program_type: "DiveTrip", program_id: trip_ids) if trip_ids.any?
+    branches << relation.where(program_type: "Course", program_id: course_ids) if course_ids.any?
+    return relation.none if branches.empty?
+
+    branches.one? ? branches.first : branches.reduce { |acc, rel| acc.or(rel) }
+  end
+  private_class_method :filter_records_by_agency_programs
 end

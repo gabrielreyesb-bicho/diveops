@@ -1,0 +1,15 @@
+<p>Hola <%= @registration.diver.name.split.first %>,</p>
+
+<p>¡Buenas noticias! Tu inscripción al programa <strong><%= program_display_name(@program) %></strong> quedó <strong>confirmada</strong>.</p>
+
+<p><strong>Fechas:</strong> <%= program_date_range(@program) %></p>
+
+<p><strong>Qué sigue</strong></p>
+<ul style="margin:8px 0;padding-left:20px;">
+  <li>Revisa los requisitos y el itinerario del programa en la ficha del viaje o curso.</li>
+  <li>Prepara tu equipo y documentación según lo indicado por la agencia.</li>
+  <li>Si tienes dudas sobre pagos o logística, contacta directamente a la agencia desde la plataforma o por los canales que te compartan.</li>
+</ul>
+
+<p>¡Gracias por confiar en Deepsoul!</p>
+<p style="margin-top:24px;">Saludos,<br>El equipo de Deepsoul</p>

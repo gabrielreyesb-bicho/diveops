@@ -14,6 +14,7 @@ module Staff
     def confirm
       flash_key = nil
       flash_message = nil
+      confirmed = false
 
       @registration.with_lock do
         program = @registration.program
@@ -24,7 +25,7 @@ module Staff
           next
         end
 
-        if program.registration_confirmed.count >= program.max_capacity
+        if program.confirmed_registrations_count >= program.max_capacity
           flash_key = :alert
           flash_message = "No hay cupo disponible."
           next
@@ -32,16 +33,22 @@ module Staff
 
         @registration.update!(status: :confirmed)
         program.sync_program_status_from_registrations!
-        flash_key = :notice
-        flash_message = "Inscripción confirmada."
+        confirmed = true
       end
 
-      redirect_to after_path, flash_key => flash_message
+      DiverMailer.registration_confirmed(@registration).deliver_later if confirmed
+
+      if flash_key
+        redirect_to after_path, flash_key => flash_message
+      else
+        redirect_to after_path
+      end
     end
 
     def waitlist
       flash_key = nil
       flash_message = nil
+      waitlisted = false
 
       @registration.with_lock do
         program = @registration.program
@@ -54,21 +61,28 @@ module Staff
 
         @registration.update!(status: :waitlisted)
         program.sync_program_status_from_registrations!
+        waitlisted = true
         flash_key = :notice
         flash_message = "Inscripción en lista de espera."
       end
+
+      DiverMailer.registration_waitlisted(@registration).deliver_later if waitlisted
 
       redirect_to after_path, flash_key => flash_message
     end
 
     def cancel
+      cancel_reason = params[:notes].presence if params.key?(:notes)
+
       @registration.with_lock do
         program = @registration.program
         attrs = { status: :cancelled }
-        attrs[:notes] = params[:notes] if params.key?(:notes)
+        attrs[:notes] = params[:notes].presence if params.key?(:notes)
         @registration.update!(attrs)
         program.sync_program_status_from_registrations!
       end
+
+      DiverMailer.registration_cancelled(@registration, reason: cancel_reason).deliver_later
 
       redirect_to after_path, notice: "Inscripción cancelada."
     end
@@ -76,7 +90,7 @@ module Staff
     private
 
     def set_registration
-      @registration = agency_registrations_scope.find(params[:id])
+      @registration = agency_registrations_scope.includes(:diver, :program).find(params[:id])
     end
 
     def agency_registrations_scope
@@ -98,7 +112,14 @@ module Staff
     end
 
     def after_path
-      request.referer.presence || staff_registrations_path
+      program = @registration.program
+      if program.is_a?(DiveTrip)
+        staff_dive_trip_registrations_path(program)
+      elsif program.is_a?(Course)
+        staff_course_registrations_path(program)
+      else
+        staff_registrations_path
+      end
     end
   end
 end

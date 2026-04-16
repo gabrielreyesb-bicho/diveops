@@ -33,9 +33,10 @@
         <% end %>
       </p>
     </div>
-    <div class="flex flex-shrink-0 flex-wrap gap-3 text-sm">
+    <div class="flex flex-shrink-0 flex-wrap items-center gap-3 text-sm">
       <%= link_to "Ver", staff_program_show_path(item), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
       <%= link_to "Editar", staff_program_edit_path(item), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+      <%= render "shared/share_button", url: public_program_url(program), title: program.title, variant: :text %>
       <% if trip %>
         <%= link_to "Inscripciones", staff_dive_trip_registrations_path(program), class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
       <% else %>

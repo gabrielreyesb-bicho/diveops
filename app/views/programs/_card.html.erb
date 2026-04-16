@@ -3,68 +3,75 @@
 <% registration = local_assigns.fetch(:registration, nil) %>
 <% trip = item[:kind] == :trip %>
 <% path = trip ? trip_path(program) : course_path(program) %>
+<% share_url = public_program_url(program) %>
 <% img = primary_program_image(program) %>
 <% desc_preview = program_card_description_preview(program) %>
 <% card_border = trip ? "border-program-trip" : "border-program-course" %>
 <% accent = trip ? "text-program-trip" : "text-program-course" %>
-<%= link_to path, class: "group flex h-full min-h-0 flex-col overflow-hidden rounded-xl border-4 #{card_border} bg-white text-left shadow-md ring-1 ring-arrecife/60 no-underline transition hover:shadow-lg focus:outline-none focus-visible:ring-2 focus-visible:ring-oceano focus-visible:ring-offset-2" do %>
-  <div class="flex shrink-0 items-center border-b border-abismo/30 bg-abismo/45 px-3 py-2.5 backdrop-blur-[8px] sm:px-4">
-    <span class="min-w-[1.25rem] flex-1" aria-hidden="true"></span>
-    <span class="text-center text-xs font-bold uppercase tracking-wider text-white">
-      <%= trip ? "Viaje" : "Curso" %>
-    </span>
-    <span class="flex min-h-[1.25rem] min-w-[1.25rem] flex-1 items-center justify-end">
-      <% if registration.present? %>
-        <%= render "programs/card_header_registration_icon", registration: registration %>
-      <% end %>
-    </span>
-  </div>
-  <div class="relative block aspect-video w-full shrink-0 overflow-hidden bg-white">
-    <% if img %>
-      <% img_src = img.variable? ? img.variant(resize_to_limit: [ 640, 360 ]) : img %>
-      <%= image_tag img_src, class: "h-full w-full object-cover object-center transition group-hover:opacity-95", alt: "" %>
-    <% else %>
-      <div class="flex h-full min-h-0 w-full items-center justify-center bg-slate-100 text-sm text-slate-400">Sin imagen</div>
-    <% end %>
-  </div>
-  <div class="flex min-h-0 flex-1 flex-col p-4">
-    <div class="shrink-0">
-      <div class="flex flex-wrap items-center gap-2">
-        <span class="inline-block w-fit rounded px-2 py-0.5 text-xs font-medium <%= program_status_badge_class(program.status) %>">
-          <%= program_status_text(program) %>
-        </span>
+<article class="group relative flex h-full min-h-0 flex-col overflow-hidden rounded-xl border-4 <%= card_border %> bg-white text-left shadow-md ring-1 ring-arrecife/60 transition hover:shadow-lg">
+  <%= link_to path, class: "absolute inset-0 z-0 rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-oceano focus-visible:ring-offset-2" do %>
+    <span class="sr-only">Ver detalle de <%= program.title %></span>
+  <% end %>
+  <div class="pointer-events-none relative z-10 flex h-full min-h-0 flex-col">
+    <div class="flex shrink-0 items-center border-b border-abismo/30 bg-abismo/45 px-3 py-2.5 backdrop-blur-[8px] sm:px-4">
+      <span class="min-w-[1.25rem] flex-1" aria-hidden="true"></span>
+      <span class="text-center text-xs font-bold uppercase tracking-wider text-white">
+        <%= trip ? "Viaje" : "Curso" %>
+      </span>
+      <div class="flex min-h-[1.25rem] min-w-[1.25rem] flex-1 items-center justify-end gap-1.5 pointer-events-auto">
+        <%= render "shared/share_button", url: share_url, title: program.title, variant: :icon %>
+        <% if registration.present? %>
+          <%= render "programs/card_header_registration_icon", registration: registration %>
+        <% end %>
       </div>
-      <h2 class="mt-2 text-lg font-semibold text-abismo group-hover:underline">
-        <%= program.title %>
-      </h2>
-      <p class="mt-1 text-sm text-slate-600">
-        <% if trip %>
-          <%= program.destination %>
-        <% else %>
-          <%= program.certification_granted.presence || "Curso" %>
-        <% end %>
-      </p>
-      <p class="mt-2 text-sm text-slate-700">
-        <% if trip %>
-          <%= program.departure_date&.strftime("%Y-%m-%d") %> → <%= program.return_date&.strftime("%Y-%m-%d") %>
-        <% else %>
-          <%= program.start_date&.strftime("%Y-%m-%d") %> → <%= program.end_date&.strftime("%Y-%m-%d") %>
-        <% end %>
-      </p>
     </div>
-
-    <div class="flex min-h-0 flex-1 flex-col pt-2">
-      <% if desc_preview.present? %>
-        <p class="line-clamp-5 text-sm leading-snug text-slate-600"><%= desc_preview %></p>
+    <div class="relative block aspect-video w-full shrink-0 overflow-hidden bg-white">
+      <% if img %>
+        <% img_src = img.variable? ? img.variant(resize_to_limit: [ 640, 360 ]) : img %>
+        <%= image_tag img_src, class: "h-full w-full object-cover object-center transition group-hover:opacity-95", alt: "" %>
+      <% else %>
+        <div class="flex h-full min-h-0 w-full items-center justify-center bg-slate-100 text-sm text-slate-400">Sin imagen</div>
       <% end %>
-      <div class="min-h-2 flex-1" aria-hidden="true"></div>
     </div>
+    <div class="flex min-h-0 flex-1 flex-col p-4">
+      <div class="shrink-0">
+        <div class="flex flex-wrap items-center gap-2">
+          <span class="inline-block w-fit rounded px-2 py-0.5 text-xs font-medium <%= program_status_badge_class(program.status) %>">
+            <%= program_status_text(program) %>
+          </span>
+        </div>
+        <h2 class="mt-2 text-lg font-semibold text-abismo group-hover:underline">
+          <%= program.title %>
+        </h2>
+        <p class="mt-1 text-sm text-slate-600">
+          <% if trip %>
+            <%= program.destination %>
+          <% else %>
+            <%= program.certification_granted.presence || "Curso" %>
+          <% end %>
+        </p>
+        <p class="mt-2 text-sm text-slate-700">
+          <% if trip %>
+            <%= program.departure_date&.strftime("%Y-%m-%d") %> → <%= program.return_date&.strftime("%Y-%m-%d") %>
+          <% else %>
+            <%= program.start_date&.strftime("%Y-%m-%d") %> → <%= program.end_date&.strftime("%Y-%m-%d") %>
+          <% end %>
+        </p>
+      </div>
 
-    <div class="shrink-0 pt-2">
-      <p class="text-sm font-medium text-abismo">
-        <%= program.base_price.present? ? number_to_currency(program.base_price, unit: "$", precision: 2) : "—" %>
-      </p>
-      <p class="mt-3 text-sm font-medium underline <%= accent %>">Ver detalle</p>
+      <div class="flex min-h-0 flex-1 flex-col pt-2">
+        <% if desc_preview.present? %>
+          <p class="line-clamp-5 text-sm leading-snug text-slate-600"><%= desc_preview %></p>
+        <% end %>
+        <div class="min-h-2 flex-1" aria-hidden="true"></div>
+      </div>
+
+      <div class="shrink-0 pt-2">
+        <p class="text-sm font-medium text-abismo">
+          <%= program.base_price.present? ? number_to_currency(program.base_price, unit: "$", precision: 2) : "—" %>
+        </p>
+        <p class="mt-3 text-sm font-medium underline <%= accent %>">Ver detalle</p>
+      </div>
     </div>
   </div>
-<% end %>
+</article>

@@ -6,6 +6,8 @@ module Staff
       before_action :set_dive_trip
 
       def index
+        @program = @dive_trip
+        @program_kind = :dive_trip
         @registrations = @dive_trip.registrations.includes(:diver, :program).order(created_at: :desc)
         @index_scope_title = "Viaje: #{@dive_trip.title}"
         render "staff/registrations/index"

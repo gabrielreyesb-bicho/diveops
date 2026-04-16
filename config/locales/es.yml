@@ -23,3 +23,37 @@ es:
           confirmed: Confirmada
           waitlisted: En lista de espera
           cancelled: Cancelada
+      diver:
+        certification_level:
+          open_water: Aguas abiertas
+          advanced: Avanzado
+          rescue: Rescate
+          divemaster: Divemaster
+          instructor: Instructor
+        privacy:
+          public: Público
+          members_only: Solo inscritos
+          private: Privado
+
+  diver:
+    privacy_help:
+      public: Cualquier visitante del catálogo puede ver que participas en un viaje o curso.
+      members_only: Solo otros buzos inscritos (confirmados) en el mismo programa pueden ver tu participación.
+      private: Nadie verá tu nombre en el listado “quién va” de los programas.
+
+  catalog:
+    program_enrollment:
+      heading:
+        dive_trip: Ya estás inscrito en este viaje.
+        course: Ya estás inscrito en este curso.
+      status_caption: Seguimiento de tu solicitud
+      badge:
+        pending: Pendiente de confirmación
+        confirmed: Confirmada
+        waitlisted: En lista de espera
+        cancelled: Cancelada
+      hint:
+        pending: Tu inscripción ya está registrada. La agencia debe confirmar tu plaza; cuando lo haga, el estado se actualizará aquí y en «Mis inscripciones».
+        confirmed: La agencia confirmó tu plaza en este programa.
+        waitlisted: Al inscribirte no había cupo disponible; permanecés en lista de espera por una eventual vacante.
+        cancelled: Esta inscripción fue cancelada.

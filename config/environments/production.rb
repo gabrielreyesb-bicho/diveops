@@ -56,21 +56,16 @@ Rails.application.configure do
   config.active_job.queue_adapter = :solid_queue
   config.solid_queue.connects_to = { database: { writing: :queue } }
 
-  # Ignore bad email addresses and do not raise email delivery errors.
-  # Set this to true and configure the email server for immediate delivery to raise delivery errors.
-  # config.action_mailer.raise_delivery_errors = false
+  config.action_mailer.delivery_method = :resend
+  config.action_mailer.perform_deliveries = true
+  # Set to true once Resend domain and API key are verified, to surface bounces in logs.
+  config.action_mailer.raise_delivery_errors = false
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
-
-  # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
-  # config.action_mailer.smtp_settings = {
-  #   user_name: Rails.application.credentials.dig(:smtp, :user_name),
-  #   password: Rails.application.credentials.dig(:smtp, :password),
-  #   address: "smtp.example.com",
-  #   port: 587,
-  #   authentication: :plain
-  # }
+  # Replace MAILER_HOST on Render when the public hostname is fixed (placeholder until then).
+  config.action_mailer.default_url_options = {
+    host: ENV.fetch("MAILER_HOST", "diveops.onrender.com"),
+    protocol: "https"
+  }
 
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false

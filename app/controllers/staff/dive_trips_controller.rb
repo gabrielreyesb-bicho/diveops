@@ -19,7 +19,7 @@ module Staff
       @dive_trip = current_agency.dive_trips.build(dive_trip_params.except(:images))
       if @dive_trip.save
         attach_photos(@dive_trip, dive_trip_params[:images])
-        redirect_to staff_dive_trip_path(@dive_trip), notice: "Viaje creado."
+        redirect_to staff_dive_trip_path(@dive_trip)
       else
         render :new, status: :unprocessable_content
       end

@@ -1,0 +1,15 @@
+<%# locals: registration %>
+<details class="inline-block text-left">
+  <summary class="<%= staff_registration_cancel_summary_class %>">
+    Cancelar
+  </summary>
+  <div class="mt-2 w-full min-w-[14rem] max-w-xs rounded-lg border border-arrecife bg-espuma p-3 shadow-sm">
+    <%= form_with url: cancel_staff_registration_path(registration), method: :patch, local: true, class: "space-y-2" do %>
+      <label class="block text-xs font-medium text-abismo">
+        Nota (opcional)
+        <%= text_area_tag :notes, nil, rows: 2, class: "mt-1 w-full rounded-md border border-arrecife bg-white px-2 py-1.5 text-sm text-abismo shadow-sm" %>
+      </label>
+      <%= submit_tag "Confirmar cancelación", class: "inline-flex min-h-10 w-full cursor-pointer justify-center rounded-lg border-2 border-coral/60 bg-white px-4 py-2 text-sm font-medium text-coral shadow-sm transition hover:bg-coral/10 hover:text-coral-hover" %>
+    <% end %>
+  </div>
+</details>

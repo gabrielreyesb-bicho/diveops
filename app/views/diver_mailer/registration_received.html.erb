@@ -1,0 +1,10 @@
+<p>Hola <%= @registration.diver.name.split.first %>,</p>
+
+<p>Recibimos tu inscripción al programa <strong><%= program_display_name(@program) %></strong>.</p>
+
+<p><strong>Estado actual:</strong> <%= registration_status_label(@registration) %></p>
+<p><strong>Fechas:</strong> <%= program_date_range(@program) %></p>
+
+<p>Te avisaremos por correo cuando haya novedades. Si tienes dudas, responde a este mensaje o escríbenos a hola@deepsoul.mx.</p>
+
+<p style="margin-top:24px;">Saludos,<br>El equipo de Deepsoul</p>

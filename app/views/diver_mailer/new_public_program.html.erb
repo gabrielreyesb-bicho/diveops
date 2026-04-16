@@ -1,0 +1,14 @@
+<p>Hola <%= @diver.name.split.first %>,</p>
+
+<p>Hay un <strong>nuevo <%= program_kind_label(@program).downcase %></strong> disponible en el catálogo Deepsoul, ofrecido por <strong><%= @agency.name %></strong>.</p>
+
+<p><strong><%= program_display_name(@program) %></strong><br>
+Fechas: <%= program_date_range(@program) %></p>
+
+<p style="margin:24px 0;">
+  <a href="<%= @program_url %>" style="display:inline-block;background-color:#185FA5;color:#ffffff;text-decoration:none;padding:12px 20px;border-radius:6px;font-weight:600;">Ver ficha del programa</a>
+</p>
+
+<p>También podés explorar todo el catálogo desde la lista de <%= link_to "programas", programs_url, style: "color:#185FA5;" %>.</p>
+
+<p style="margin-top:24px;">¡Buen día!<br>El equipo de Deepsoul</p>

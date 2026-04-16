@@ -1,0 +1,21 @@
+<% content_for :title, "Preferencias de correo · DiveOps" %>
+
+<div class="mx-auto max-w-lg px-4 py-16">
+  <div class="rounded-xl border border-arrecife/60 bg-white p-8 shadow-md ring-1 ring-arrecife/60">
+    <h1 class="text-xl font-semibold text-profundo">Listo</h1>
+    <p class="mt-4 text-slate-700">
+      Ya no te enviaremos correos de DiveOps sobre tu cuenta, inscripciones o programas a <strong><%= @diver.email %></strong>.
+    </p>
+    <p class="mt-4 text-sm text-slate-600">
+      Los mensajes necesarios por seguridad (por ejemplo, restablecer contraseña) pueden seguir enviándose.
+    </p>
+    <p class="mt-6 text-sm text-slate-600">
+      Si cambiás de opinión, iniciá sesión y en
+      <%= link_to "Editar perfil", edit_diver_profile_path, class: "font-medium text-oceano underline hover:text-profundo" %>
+      podés volver a activar los correos de DiveOps.
+    </p>
+    <p class="mt-8">
+      <%= link_to "Ir al inicio", root_path, class: "rounded-lg bg-oceano px-4 py-2 text-sm font-medium text-white hover:bg-profundo" %>
+    </p>
+  </div>
+</div>

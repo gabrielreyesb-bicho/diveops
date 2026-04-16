@@ -19,7 +19,7 @@ module Staff
       @course = current_agency.courses.build(course_params.except(:images))
       if @course.save
         attach_photos(@course, course_params[:images])
-        redirect_to staff_course_path(@course), notice: "Curso creado."
+        redirect_to staff_course_path(@course)
       else
         render :new, status: :unprocessable_content
       end

@@ -1,13 +1,37 @@
 <!DOCTYPE html>
-<html>
+<html lang="es">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
-    <style>
-      /* Email styles need to be inline */
-    </style>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
   </head>
-
-  <body>
-    <%= yield %>
+  <body style="margin:0;padding:0;background-color:#f4f6f8;">
+    <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background-color:#f4f6f8;padding:24px 12px;">
+      <tr>
+        <td align="center">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background-color:#ffffff;border-radius:8px;overflow:hidden;">
+            <tr>
+              <td style="background-color:#185FA5;padding:20px 24px;">
+                <p style="margin:0;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:22px;font-weight:700;color:#ffffff;">Deepsoul</p>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:28px 24px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:16px;line-height:1.55;color:#1a1a1a;">
+                <%= yield %>
+              </td>
+            </tr>
+            <tr>
+              <td style="padding:16px 24px 24px;font-family:system-ui,-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;font-size:13px;line-height:1.5;color:#5c6470;border-top:1px solid #e8ecf0;">
+                <% if defined?(@unsubscribe_url) && @unsubscribe_url.present? %>
+                  <p style="margin:0 0 12px;">
+                    <a href="<%= @unsubscribe_url %>" style="color:#185FA5;text-decoration:underline;">Darse de baja de estos correos</a>
+                  </p>
+                <% end %>
+                <p style="margin:0;">Deepsoul · Guadalajara · hola@deepsoul.mx</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

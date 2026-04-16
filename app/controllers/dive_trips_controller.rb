@@ -8,7 +8,7 @@ class DiveTripsController < ApplicationController
   def show
     raise ActiveRecord::RecordNotFound unless program_visible_to_catalog?(@dive_trip)
 
-    @going_public = public_going_divers(@dive_trip)
+    @going_divers = visible_going_divers(@dive_trip, viewer: (current_diver if diver_signed_in?))
   end
 
   private

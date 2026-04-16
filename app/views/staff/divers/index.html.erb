@@ -1,0 +1,53 @@
+<% content_for :title, "Buzos · #{current_agency.name} · DiveOps" %>
+
+<div class="mx-auto max-w-5xl space-y-6">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-profundo">Buzos</h1>
+      <p class="mt-1 text-sm text-abismo/80">
+        Personas con inscripción o interés en algún viaje o curso de <%= current_agency.name %>.
+      </p>
+    </div>
+    <%= link_to "← Panel de agencia", staff_root_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+  </div>
+
+  <% if @divers.blank? %>
+    <p class="rounded-xl border border-arrecife bg-white p-6 text-sm text-abismo/80 shadow-sm">
+      Aún no hay buzos vinculados a tus programas. Aparecerán aquí cuando alguien se inscriba o marque interés en un viaje o curso publicado.
+    </p>
+  <% else %>
+    <div class="overflow-x-auto rounded-xl border border-arrecife/80 bg-white shadow-sm">
+      <table class="min-w-full border-collapse text-left text-sm">
+        <thead class="border-b border-arrecife/60 bg-espuma/80 text-xs font-semibold uppercase tracking-wide text-slate-600">
+          <tr>
+            <th class="px-4 py-3" scope="col">Buzo</th>
+            <th class="px-4 py-3" scope="col">Correo</th>
+            <th class="hidden px-4 py-3 sm:table-cell" scope="col">Teléfono</th>
+            <th class="px-4 py-3" scope="col">Certificación</th>
+            <th class="px-4 py-3" scope="col"><span class="sr-only">Ficha</span></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-arrecife/40">
+          <% @divers.each do |diver| %>
+            <tr class="bg-white text-abismo">
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-3">
+                  <%= staff_diver_avatar_or_initials(diver, size: :sm) %>
+                  <div class="min-w-0">
+                    <%= link_to diver.name, staff_diver_path(diver), class: "font-medium text-oceano underline decoration-oceano/40 hover:text-profundo" %>
+                  </div>
+                </div>
+              </td>
+              <td class="max-w-[14rem] truncate px-4 py-3 text-abismo/90"><%= diver.email %></td>
+              <td class="hidden px-4 py-3 text-abismo/80 sm:table-cell"><%= diver.phone.presence || "—" %></td>
+              <td class="px-4 py-3 text-abismo/90"><%= diver_certification_level_text(diver) %></td>
+              <td class="whitespace-nowrap px-4 py-3">
+                <%= link_to "Ver ficha", staff_diver_path(diver), class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

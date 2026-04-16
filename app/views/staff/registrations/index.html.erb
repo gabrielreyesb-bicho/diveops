@@ -1,22 +1,52 @@
-<div class="max-w-6xl space-y-6">
-  <div class="flex flex-wrap items-baseline justify-between gap-4">
-    <h1 class="text-xl font-semibold text-slate-900">Inscripciones</h1>
-    <% if @index_scope_title.present? %>
-      <p class="text-sm text-slate-600"><%= @index_scope_title %></p>
-    <% end %>
-  </div>
+<div class="mx-auto max-w-6xl space-y-6">
+  <% if @program %>
+    <div>
+      <%= link_to "← Volver al panel", staff_root_path, class: "inline-flex text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+    </div>
 
-  <% if @index_scope_title.blank? %>
-    <%= form_with url: staff_registrations_path, method: :get, local: true, class: "flex flex-wrap items-end gap-3 rounded border border-slate-200 bg-slate-50 p-4 text-sm" do %>
+    <header class="rounded-xl border border-arrecife/80 bg-white p-6 shadow-sm">
+      <div class="flex flex-col gap-4 sm:flex-row sm:items-start sm:justify-between">
+        <div class="min-w-0 space-y-2">
+          <p class="text-xs font-semibold uppercase tracking-wide text-slate-500">
+            <%= @program_kind == :dive_trip ? "Viaje" : "Curso" %>
+          </p>
+          <h1 class="text-xl font-semibold text-profundo"><%= @program.title %></h1>
+          <div class="flex flex-wrap items-center gap-x-4 gap-y-1 text-sm text-abismo/85">
+            <span>
+              Estado del programa:
+              <span class="font-medium text-abismo"><%= program_status_text(@program) %></span>
+            </span>
+            <span class="hidden text-arrecife sm:inline" aria-hidden="true">·</span>
+            <span>
+              Cupos ocupados / máximo:
+              <span class="font-medium text-abismo"><%= @program.registration_slots_used %> / <%= @program.max_capacity %></span>
+            </span>
+          </div>
+        </div>
+        <div class="shrink-0">
+          <% if @program.is_a?(DiveTrip) %>
+            <%= link_to "Ver viaje", staff_dive_trip_path(@program), class: "inline-flex rounded-lg border-2 border-oceano bg-white px-4 py-2 text-sm font-medium text-oceano shadow-sm transition hover:bg-espuma hover:text-profundo" %>
+          <% else %>
+            <%= link_to "Ver curso", staff_course_path(@program), class: "inline-flex rounded-lg border-2 border-caribe bg-white px-4 py-2 text-sm font-medium text-caribe shadow-sm transition hover:bg-espuma hover:text-profundo" %>
+          <% end %>
+        </div>
+      </div>
+    </header>
+  <% else %>
+    <div class="flex flex-wrap items-baseline justify-between gap-4">
+      <h1 class="text-xl font-semibold text-profundo">Inscripciones</h1>
+    </div>
+
+    <%= form_with url: staff_registrations_path, method: :get, local: true, class: "flex flex-wrap items-end gap-3 rounded-xl border border-arrecife bg-espuma/50 p-4 text-sm" do %>
       <div>
         <label class="block text-xs font-medium text-slate-600">Programa</label>
         <%= select_tag :program_type,
                        options_for_select([ [ "Todos", "" ], [ "Viaje (DiveTrip)", "DiveTrip" ], [ "Curso", "Course" ] ], params[:program_type]),
-                       class: "mt-1 rounded border border-slate-300 px-2 py-1" %>
+                       class: "mt-1 rounded-md border border-arrecife bg-white px-2 py-1.5 text-abismo shadow-sm" %>
       </div>
       <div>
         <label class="block text-xs font-medium text-slate-600">ID programa</label>
-        <%= text_field_tag :program_id, params[:program_id], class: "mt-1 w-24 rounded border border-slate-300 px-2 py-1" %>
+        <%= text_field_tag :program_id, params[:program_id], class: "mt-1 w-24 rounded-md border border-arrecife bg-white px-2 py-1.5 text-abismo shadow-sm" %>
       </div>
       <div>
         <label class="block text-xs font-medium text-slate-600">Estado inscripción</label>
@@ -31,41 +61,56 @@
                          ],
                          params[:status]
                        ),
-                       class: "mt-1 rounded border border-slate-300 px-2 py-1" %>
+                       class: "mt-1 rounded-md border border-arrecife bg-white px-2 py-1.5 text-abismo shadow-sm" %>
       </div>
-      <%= submit_tag "Filtrar", class: "rounded bg-profundo px-3 py-1.5 text-sm font-medium text-espuma hover:bg-abismo" %>
-      <%= link_to "Limpiar", staff_registrations_path, class: "text-sm text-caribe underline" %>
+      <%= submit_tag "Filtrar", class: "rounded-md bg-profundo px-3 py-1.5 text-sm font-medium text-espuma hover:bg-abismo" %>
+      <%= link_to "Limpiar", staff_registrations_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
     <% end %>
   <% end %>
 
   <% if @registrations.blank? %>
-    <p class="text-sm text-slate-600">No hay inscripciones.</p>
+    <p class="rounded-xl border border-arrecife bg-white p-6 text-sm text-slate-600 shadow-sm">No hay inscripciones.</p>
   <% else %>
-    <div class="overflow-x-auto rounded border border-slate-200">
+    <div class="overflow-x-auto rounded-xl border border-arrecife/80 bg-white shadow-sm">
       <table class="min-w-full border-collapse text-left">
-        <thead class="bg-slate-50 text-xs font-medium text-slate-600">
+        <thead class="border-b border-arrecife/60 bg-espuma/80 text-xs font-semibold uppercase tracking-wide text-slate-600">
           <tr>
-            <th class="px-3 py-2">Buzo</th>
-            <th class="px-3 py-2">Programa</th>
-            <th class="px-3 py-2">Fecha inscripción</th>
-            <th class="px-3 py-2">Estado</th>
-            <th class="px-3 py-2">Acciones</th>
+            <% if @program %>
+              <th class="px-3 py-3">Buzo</th>
+              <th class="px-3 py-3">Certificación</th>
+              <th class="px-3 py-3">Inscripción</th>
+              <th class="px-3 py-3">Estado</th>
+              <th class="px-3 py-3">Acciones</th>
+            <% else %>
+              <th class="px-3 py-3">Buzo</th>
+              <th class="px-3 py-3">Programa</th>
+              <th class="px-3 py-3">Certificación</th>
+              <th class="px-3 py-3">Inscripción</th>
+              <th class="px-3 py-3">Estado</th>
+              <th class="px-3 py-3">Acciones</th>
+            <% end %>
           </tr>
         </thead>
         <tbody>
-          <%= render partial: "staff/registrations/registration_row", collection: @registrations, as: :registration %>
+          <% if @program %>
+            <%= render partial: "staff/registrations/program_registration_row", collection: @registrations, as: :registration %>
+          <% else %>
+            <%= render partial: "staff/registrations/registration_row", collection: @registrations, as: :registration %>
+          <% end %>
         </tbody>
       </table>
     </div>
+
+    <% if @program %>
+      <p class="text-sm text-abismo/90">
+        <%= staff_registration_counts_phrase(@registrations) %>
+      </p>
+    <% end %>
   <% end %>
 
-  <p class="text-sm">
-    <% if @index_scope_title.present? && defined?(@dive_trip) && @dive_trip %>
-      <%= link_to "← Viaje", staff_dive_trip_path(@dive_trip), class: "text-caribe underline" %>
-    <% elsif @index_scope_title.present? && defined?(@course) && @course %>
-      <%= link_to "← Curso", staff_course_path(@course), class: "text-caribe underline" %>
-    <% else %>
-      <%= link_to "← Panel", staff_root_path, class: "text-caribe underline" %>
-    <% end %>
-  </p>
+  <% unless @program %>
+    <p class="text-sm">
+      <%= link_to "← Volver al panel", staff_root_path, class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+    </p>
+  <% end %>
 </div>

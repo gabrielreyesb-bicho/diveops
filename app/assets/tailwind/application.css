@@ -5,6 +5,22 @@
 @source "../../helpers/**/*.rb";
 
 /* DiveOps — paleta de marca (Abismo, Profundo, Océano, Caribe, Arrecife, Espuma, Coral) */
+/* Navbar: fijo + abismo claramente semitransparente (≈ bg-abismo/45; el /92 era casi opaco). */
+nav.app-site-nav {
+  position: fixed !important;
+  inset-inline: 0 !important;
+  top: 0 !important;
+  width: 100% !important;
+  z-index: 9999 !important;
+  background-color: rgb(4 44 83 / 0.45);
+  color: #f0f6fc;
+}
+
+/* Contraste del texto sobre el patrón claro; no afectar enlaces del menú desplegable ([role="menuitem"]). */
+nav.app-site-nav :is(a, button):not([role="menuitem"]) {
+  text-shadow: 0 1px 2px rgb(0 0 0 / 0.45);
+}
+
 @theme {
   --color-abismo: #042c53;
   --color-profundo: #0c447c;

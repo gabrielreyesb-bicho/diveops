@@ -1,0 +1,9 @@
+<p>Hola <%= @registration.diver.name.split.first %>,</p>
+
+<p>Tu inscripción al programa <strong><%= program_display_name(@program) %></strong> está ahora en <strong>lista de espera</strong>.</p>
+
+<p><strong>Fechas del programa:</strong> <%= program_date_range(@program) %></p>
+
+<p>Si se libera un lugar, te contactaremos por correo. Mientras tanto, puedes revisar otros programas disponibles en Deepsoul.</p>
+
+<p style="margin-top:24px;">Saludos,<br>El equipo de Deepsoul</p>
