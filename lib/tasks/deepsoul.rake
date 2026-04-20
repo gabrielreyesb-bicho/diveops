@@ -7,8 +7,6 @@ namespace :deepsoul do
     agency = Agency.find_or_create_by!(slug: "deepsoul") do |a|
       a.name = "DeepSoul"
       a.contact_email = "contacto@deepsoul.com"
-      a.phone = "+52 333 123 4567"
-      a.website = "https://diveops.onrender.com"
       puts "✅ Agencia DeepSoul creada"
     end
 
