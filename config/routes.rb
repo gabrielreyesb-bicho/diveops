@@ -1,6 +1,10 @@
 Rails.application.routes.draw do
   root "home#index"
 
+  # Setup inicial (solo accesible si no hay usuarios)
+  get "setup", to: "setup#index"
+  post "setup", to: "setup#create"
+
   # Baja de correos DiveOps (enlace firmado; POST compatible con one-click de Gmail / RFC 8058).
   match "/email/unsubscribe", to: "email_preferences#unsubscribe", via: [ :get, :post ], as: :email_unsubscribe
 
