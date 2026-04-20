@@ -53,7 +53,7 @@ Rails.application.configure do
   config.cache_store = :memory_store
 
   # Replace the default in-process and non-durable queuing backend for Active Job.
-  config.active_job.queue_adapter = :solid_queue
+  config.active_job.queue_adapter = :async
 
   config.action_mailer.delivery_method = :resend
   config.action_mailer.perform_deliveries = true
