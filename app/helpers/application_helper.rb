@@ -1,5 +1,6 @@
 module ApplicationHelper
-  DIVER_AVATAR_PIXELS = { sm: 32, md: 40, lg: 96, nav: 44 }.freeze
+  DIVER_AVATAR_PIXELS = { sm: 32, md: 40, lg: 96, nav: 52 }.freeze
+  USER_AVATAR_PIXELS = { sm: 32, md: 40, lg: 96, nav: 52 }.freeze
 
   # Enum labels (via I18n) — defined here so every view has them even when
   # `include_all_helpers` is false for a controller.
@@ -49,10 +50,21 @@ module ApplicationHelper
   # Contenedor cuadrado + <img> absolute inset-0: evita el preflight `img{height:auto}` y rarezas con
   # `backdrop-blur` en el <nav> (bandas / “algo encima” del círculo).
   def diver_avatar_for(diver, variant: :md, extra_class: "")
-    px = DIVER_AVATAR_PIXELS[variant] || 40
+    avatar_for(diver, variant: variant, extra_class: extra_class, default_image: "avatar_buzo.png", pixels: DIVER_AVATAR_PIXELS)
+  end
+
+  # Avatar para usuarios de staff (usa el mismo concepto que buzos).
+  def user_avatar_for(user, variant: :md, extra_class: "")
+    avatar_for(user, variant: variant, extra_class: extra_class, default_image: "avatar_staff.png", pixels: USER_AVATAR_PIXELS)
+  end
+
+  private
+
+  def avatar_for(record, variant:, extra_class:, default_image:, pixels:)
+    px = pixels[variant] || 40
     size_classes = case variant
                    when :sm then "h-8 w-8"
-                   when :nav then "h-11 w-11"
+                   when :nav then "h-13 w-13"
                    when :lg then "h-24 w-24"
                    else "h-10 w-10"
                    end
@@ -61,11 +73,11 @@ module ApplicationHelper
     img_class = "pointer-events-none absolute inset-0 box-border h-full w-full object-cover"
     img_style = "max-width:none;max-height:none"
 
-    inner = if diver_avatar_storage_usable?(diver.avatar)
-              src = diver.avatar.variable? ? diver.avatar.variant(resize_to_fill: [ px, px ]) : diver.avatar
+    inner = if avatar_storage_usable?(record.avatar)
+              src = record.avatar.variable? ? record.avatar.variant(resize_to_fill: [ px, px ]) : record.avatar
               image_tag src, class: img_class, style: img_style, alt: ""
             else
-              image_tag "avatar_buzo.png",
+              image_tag default_image,
                         class: img_class,
                         style: img_style,
                         alt: "",
@@ -75,9 +87,7 @@ module ApplicationHelper
     content_tag(:span, inner, class: wrapper_class, style: "width:#{px}px;height:#{px}px;isolation:isolate")
   end
 
-  private
-
-  def diver_avatar_storage_usable?(attachment)
+  def avatar_storage_usable?(attachment)
     return false unless attachment.attached?
 
     blob = attachment.blob

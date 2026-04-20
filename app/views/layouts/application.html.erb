@@ -28,22 +28,22 @@
 
   <body class="min-h-screen bg-espuma antialiased text-abismo">
     <%# fixed: sticky falla si un padre tiene overflow oculto; el padding evita que el main quede bajo el nav. %>
-    <nav class="app-site-nav flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-abismo/30 px-5 py-4 text-sm shadow-md sm:flex-nowrap">
+    <nav class="app-site-nav flex flex-wrap items-center justify-between gap-x-4 gap-y-2 border-b border-abismo/30 px-5 py-1.5 text-sm shadow-md sm:flex-nowrap">
       <div class="flex min-w-0 min-h-0 flex-1 flex-wrap items-center gap-x-4 gap-y-2">
         <%= link_to root_path, class: "inline-flex shrink-0 items-center gap-2.5 no-underline transition hover:opacity-95" do %>
-          <%= image_tag "logo.png", alt: "", class: "h-12 w-auto shrink-0" %>
-          <span class="text-lg font-semibold tracking-tight text-white">DiveOps</span>
+          <%= image_tag "logo2.png", alt: "", class: "h-24 w-auto shrink-0 nav-logo" %>
+          <span class="text-lg font-semibold tracking-tight text-abismo">DiveOps</span>
         <% end %>
         <% if diver_signed_in? %>
-          <%= link_to "Inicio", root_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
-          <%= link_to "Catálogo", programs_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
+          <%= link_to "Inicio", root_path, class: "text-abismo underline decoration-abismo/40 hover:text-oceano" %>
+          <%= link_to "Catálogo", programs_path, class: "text-abismo underline decoration-abismo/40 hover:text-oceano" %>
         <% end %>
         <% if user_signed_in? %>
           <% if diver_signed_in? %>
             <span class="hidden text-arrecife/80 sm:inline" aria-hidden="true">|</span>
           <% end %>
-          <%= link_to "Panel agencia", staff_root_path, class: "font-medium text-white underline decoration-white/40 hover:text-arrecife" %>
-          <%= link_to "Buzos", staff_divers_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
+          <%= link_to "Panel agencia", staff_root_path, class: "font-medium text-abismo underline decoration-abismo/40 hover:text-oceano" %>
+          <%= link_to "Buzos", staff_divers_path, class: "text-abismo underline decoration-abismo/40 hover:text-oceano" %>
         <% end %>
       </div>
       <% if diver_signed_in? || user_signed_in? %>
@@ -52,14 +52,14 @@
             <%= render "shared/diver_nav_dropdown" %>
           <% end %>
           <% if user_signed_in? %>
-            <%= button_to "Cerrar sesión (#{current_user.name})", destroy_user_session_path, method: :delete, class: "cursor-pointer bg-transparent text-right text-white underline decoration-white/40 hover:text-arrecife" %>
+            <%= render "shared/user_nav_dropdown" %>
           <% end %>
         </div>
       <% end %>
       <% unless user_signed_in? || diver_signed_in? %>
         <div class="flex w-full flex-wrap items-center gap-x-4 gap-y-2 sm:ml-auto sm:w-auto sm:justify-end">
-          <%= link_to "Inicio de sesión — buzo", new_diver_session_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
-          <%= link_to "Inicio de sesión — staff de agencia", new_user_session_path, class: "text-white underline decoration-white/40 hover:text-arrecife" %>
+          <%= link_to "Inicio de sesión — buzo", new_diver_session_path, class: "text-abismo underline decoration-abismo/40 hover:text-oceano" %>
+          <%= link_to "Inicio de sesión — staff de agencia", new_user_session_path, class: "text-abismo underline decoration-abismo/40 hover:text-oceano" %>
         </div>
       <% end %>
     </nav>

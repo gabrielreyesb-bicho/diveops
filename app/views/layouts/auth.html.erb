@@ -17,7 +17,7 @@
     <div class="flex min-h-screen flex-col px-4 py-10 sm:px-6 sm:py-14">
       <header class="mb-8 flex flex-col items-center text-center">
         <%= link_to root_path, class: "group inline-flex items-center gap-2 rounded-lg px-2 py-1 text-abismo transition hover:opacity-90", aria: { label: "DiveOps — inicio" } do %>
-          <%= image_tag "/logo1.png", alt: "DiveOps", class: "h-20 w-auto max-w-[min(320px,92vw)] object-contain sm:h-24" %>
+          <%= image_tag "logo.png", alt: "DiveOps", class: "h-20 w-auto max-w-[min(320px,92vw)] object-contain sm:h-24" %>
         <% end %>
         <% if content_for(:auth_tagline).present? %>
           <p class="mt-2 max-w-sm text-sm text-profundo"><%= content_for :auth_tagline %></p>

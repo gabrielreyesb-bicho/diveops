@@ -9,9 +9,9 @@
     data-action="click->dropdown#toggle"
     aria-expanded="false"
     aria-haspopup="menu"
-    aria-label="<%= h("Menú de cuenta (#{current_diver.name})") %>"
+    aria-label="<%= h("Menú de cuenta (#{current_user.name})") %>"
   >
-    <%= diver_avatar_for(current_diver, variant: :nav) %>
+    <%= user_avatar_for(current_user, variant: :nav) %>
   </button>
   <div
     data-dropdown-target="panel"
@@ -19,10 +19,9 @@
     role="menu"
     aria-hidden="true"
   >
-    <%= link_to "Mi perfil", diver_profile_path, class: "block px-4 py-2 text-abismo no-underline hover:bg-espuma", role: "menuitem" %>
-    <%= link_to "Mis inscripciones", my_registrations_path, class: "block px-4 py-2 text-abismo no-underline hover:bg-espuma", role: "menuitem" %>
+    <%= link_to "Panel agencia", staff_root_path, class: "block px-4 py-2 text-abismo no-underline hover:bg-espuma", role: "menuitem" %>
     <%= link_to "Cerrar sesión",
-                destroy_diver_session_path,
+                destroy_user_session_path,
                 data: { turbo_method: :delete },
                 class: "block w-full px-4 py-2 text-left text-abismo no-underline hover:bg-espuma",
                 role: "menuitem" %>
