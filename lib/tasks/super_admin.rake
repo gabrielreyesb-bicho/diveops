@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 namespace :super_admin do
-  desc "Marca un usuario del panel como super administrador de plataforma. Uso: bin/rails super_admin:promote[correo@ejemplo.com]"
+  desc "Marca un usuario del panel como super administrador de plataforma. Uso: bin/rails super_admin:promote[correo@ejemplo.com]. En producción sin consola, usá SUPER_ADMIN_EMAIL en el entorno (ver config/initializers/super_admin_from_env.rb)."
   task :promote, [ :email ] => :environment do |_t, args|
     email = args[:email].to_s.strip
     abort "Uso: bin/rails super_admin:promote[correo@ejemplo.com]" if email.blank?
