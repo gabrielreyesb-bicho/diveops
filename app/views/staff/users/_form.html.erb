@@ -1,0 +1,71 @@
+<%= form_with model: [:staff, user],
+              html: { class: "space-y-4 w-full", novalidate: true },
+              data: { turbo: false } do |f| %>
+  <% if user.errors.any? %>
+    <div class="rounded border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+      <ul class="list-disc pl-5">
+        <% user.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, "Nombre", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.text_field :name, required: true, autocomplete: "name", class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <div>
+    <%= f.label :email, "Correo", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.email_field :email, required: true, autocomplete: "email", class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <% if current_user.owner? %>
+    <div>
+      <%= f.label :role, "Rol", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.select :role,
+                   User.roles.keys.map { |k| [ t("activerecord.enums.user.role.#{k}"), k ] },
+                   {},
+                   class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+      <p class="mt-1 text-xs text-slate-500">
+        Titular: puede asignar roles y quitar personas. Staff: accede al panel; solo un titular puede cambiar este campo.
+      </p>
+    </div>
+  <% elsif !user.new_record? %>
+    <div>
+      <span class="block text-sm font-medium text-slate-700">Rol</span>
+      <p class="mt-1 text-sm text-abismo/90"><%= staff_user_role_label(user) %></p>
+      <p class="mt-1 text-xs text-slate-500">Solo un titular puede cambiar el rol.</p>
+    </div>
+  <% end %>
+
+  <% if user.new_record? %>
+    <div>
+      <%= f.label :password, "Contraseña", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.password_field :password, required: true, autocomplete: "new-password", class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+    </div>
+    <div>
+      <%= f.label :password_confirmation, "Confirmar contraseña", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.password_field :password_confirmation, required: true, autocomplete: "new-password", class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+    </div>
+  <% else %>
+    <div class="rounded-lg border border-arrecife/80 bg-espuma/50 p-3 text-sm text-abismo/90">
+      <p class="font-medium text-abismo">Cambiar contraseña (opcional)</p>
+      <p class="mt-1 text-xs text-abismo/70">Dejá en blanco si no querés cambiarla ahora.</p>
+    </div>
+    <div>
+      <%= f.label :password, "Nueva contraseña", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.password_field :password, autocomplete: "new-password", class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+    </div>
+    <div>
+      <%= f.label :password_confirmation, "Confirmar nueva contraseña", class: "block text-sm font-medium text-slate-700" %>
+      <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+    </div>
+  <% end %>
+
+  <div class="pt-2">
+    <%= f.submit user.new_record? ? "Crear cuenta" : "Guardar cambios",
+                 class: "inline-flex w-full cursor-pointer justify-center rounded-lg border-2 border-oceano bg-oceano px-4 py-2 text-sm font-medium text-espuma shadow-sm transition hover:border-profundo hover:bg-profundo sm:w-auto" %>
+  </div>
+<% end %>

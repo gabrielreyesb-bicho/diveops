@@ -23,6 +23,10 @@ es:
           confirmed: Confirmada
           waitlisted: En lista de espera
           cancelled: Cancelada
+      user:
+        role:
+          owner: Titular
+          staff: Staff
       diver:
         certification_level:
           open_water: Aguas abiertas

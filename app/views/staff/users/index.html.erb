@@ -1,0 +1,57 @@
+<% content_for :title, "Staff · #{current_agency.name} · DiveOps" %>
+
+<div class="mx-auto max-w-5xl space-y-6">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-profundo">Staff</h1>
+      <p class="mt-1 text-sm text-abismo/80">
+        Titulares y personal de <%= current_agency.name %> con acceso al panel de agencia.
+      </p>
+    </div>
+    <div class="flex flex-wrap items-center gap-3 sm:justify-end">
+      <%= link_to "Agregar persona", new_staff_user_path, class: "inline-flex items-center justify-center rounded-lg border-2 border-oceano bg-white px-4 py-2 text-sm font-medium text-oceano shadow-sm transition hover:bg-espuma hover:text-profundo" %>
+      <%= link_to "← Panel de agencia", staff_root_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+    </div>
+  </div>
+
+  <% if @users.blank? %>
+    <p class="rounded-xl border border-arrecife bg-white p-6 text-sm text-abismo/80 shadow-sm">
+      No hay usuarios del panel en esta agencia.
+    </p>
+  <% else %>
+    <div class="overflow-x-auto rounded-xl border border-arrecife/80 bg-white shadow-sm">
+      <table class="min-w-full border-collapse text-left text-sm">
+        <thead class="border-b border-arrecife/60 bg-espuma/80 text-xs font-semibold uppercase tracking-wide text-slate-600">
+          <tr>
+            <th class="px-4 py-3" scope="col">Persona</th>
+            <th class="px-4 py-3" scope="col">Correo</th>
+            <th class="px-4 py-3" scope="col">Rol</th>
+            <th class="px-4 py-3" scope="col"><span class="sr-only">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-arrecife/40">
+          <% @users.each do |user| %>
+            <tr class="bg-white text-abismo">
+              <td class="px-4 py-3">
+                <div class="flex items-center gap-3">
+                  <%= staff_user_avatar_or_initials(user, size: :sm) %>
+                  <div class="min-w-0">
+                    <span class="font-medium text-oceano"><%= user.name %></span>
+                    <% if user == current_user %>
+                      <span class="ml-1 text-xs font-normal text-abismo/60">(vos)</span>
+                    <% end %>
+                  </div>
+                </div>
+              </td>
+              <td class="max-w-[14rem] truncate px-4 py-3 text-abismo/90"><%= user.email %></td>
+              <td class="px-4 py-3 text-abismo/90"><%= staff_user_role_label(user) %></td>
+              <td class="whitespace-nowrap px-4 py-3">
+                <%= link_to "Editar", edit_staff_user_path(user), class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

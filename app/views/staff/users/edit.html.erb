@@ -1,0 +1,21 @@
+<% content_for :title, "Editar #{@user.name} · #{current_agency.name} · DiveOps" %>
+
+<div class="mx-auto max-w-lg space-y-6">
+  <div>
+    <h1 class="text-xl font-semibold text-profundo">Editar integrante</h1>
+    <p class="mt-1 text-sm text-abismo/80"><%= @user.email %></p>
+  </div>
+
+  <%= render "form", user: @user %>
+
+  <div class="flex flex-col gap-4 border-t border-arrecife/60 pt-6 sm:flex-row sm:items-center sm:justify-between">
+    <%= link_to "Volver al listado", staff_users_path, class: "text-center text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano sm:text-left" %>
+    <% unless staff_user_only_owner?(@user) %>
+      <%= button_to "Quitar del equipo",
+                    staff_user_path(@user),
+                    method: :delete,
+                    form: { data: { turbo_confirm: "¿Seguro que querés quitar a #{@user.name}? Perderá acceso al panel de agencia." } },
+                    class: "inline-flex w-full justify-center rounded-lg border-2 border-coral/55 bg-white px-4 py-2 text-sm font-medium text-coral shadow-sm transition hover:bg-coral/10 sm:w-auto" %>
+    <% end %>
+  </div>
+</div>

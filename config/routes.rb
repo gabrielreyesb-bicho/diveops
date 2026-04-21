@@ -57,6 +57,8 @@ Rails.application.routes.draw do
   namespace :staff, path: "agency/dashboard" do
     root to: "dashboard#index"
 
+    resources :users, only: [ :index, :new, :create, :edit, :update, :destroy ]
+
     resources :divers, only: [ :index, :show ]
 
     resources :registrations, only: [ :index ] do

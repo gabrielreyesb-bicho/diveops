@@ -1,0 +1,16 @@
+<% content_for :title, "Agregar al equipo · #{current_agency.name} · DiveOps" %>
+
+<div class="mx-auto max-w-lg space-y-6">
+  <div>
+    <h1 class="text-xl font-semibold text-profundo">Agregar al equipo</h1>
+    <p class="mt-1 text-sm text-abismo/80">
+      Creá una cuenta para otra persona de <%= current_agency.name %>. Compartí la contraseña por un canal seguro.
+    </p>
+  </div>
+
+  <%= render "form", user: @user %>
+
+  <p class="text-center text-sm">
+    <%= link_to "Volver al listado", staff_users_path, class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+  </p>
+</div>
