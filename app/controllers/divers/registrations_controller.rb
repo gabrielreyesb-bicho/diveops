@@ -12,6 +12,12 @@ module Divers
       @registrations = current_diver.registrations.includes(program: :agency).order(created_at: :desc)
     end
 
+    protected
+
+    def after_sign_up_path_for(resource)
+      divers_welcome_path
+    end
+
     private
 
     def diver_registration_layout

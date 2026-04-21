@@ -39,6 +39,8 @@ Rails.application.routes.draw do
   end
 
   authenticate :diver do
+    get "welcome", to: "divers/welcome#show", as: :divers_welcome
+    
     scope path: "my", module: :divers do
       get "profile", to: "profiles#show", as: :diver_profile
       get "profile/edit", to: "profiles#edit", as: :edit_diver_profile

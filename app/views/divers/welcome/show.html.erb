@@ -1,0 +1,75 @@
+<% content_for :title, "Bienvenido a DeepSoul · DiveOps" %>
+
+<div class="mx-auto max-w-4xl px-4 py-12 sm:py-16">
+  <%# Hero de bienvenida %>
+  <div class="text-center">
+    <h1 class="text-3xl font-bold text-abismo sm:text-4xl">
+      ¡Hola, <%= current_diver.name %>! 👋
+    </h1>
+    <p class="mx-auto mt-4 max-w-2xl text-lg text-profundo">
+      Bienvenido a <strong class="text-oceano">DeepSoul</strong>. Nos alegra que te unas a nuestra comunidad de buzos.
+    </p>
+  </div>
+
+  <%# Cómo funciona %>
+  <div class="mt-16">
+    <h2 class="text-center text-2xl font-semibold text-abismo">¿Cómo funciona?</h2>
+    <p class="mx-auto mt-2 max-w-xl text-center text-sm text-profundo">
+      Es muy sencillo inscribirte a nuestros viajes y cursos:
+    </p>
+
+    <div class="mt-10 grid gap-8 sm:grid-cols-3">
+      <%# Paso 1 %>
+      <div class="flex flex-col items-center text-center">
+        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-arrecife/20 text-2xl font-bold text-oceano">
+          1
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-abismo">Explora</h3>
+        <p class="mt-2 text-sm leading-relaxed text-profundo">
+          Navega por nuestros viajes y cursos disponibles. Revisa fechas, destinos y requisitos.
+        </p>
+      </div>
+
+      <%# Paso 2 %>
+      <div class="flex flex-col items-center text-center">
+        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-arrecife/20 text-2xl font-bold text-oceano">
+          2
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-abismo">Inscríbete</h3>
+        <p class="mt-2 text-sm leading-relaxed text-profundo">
+          Haz clic en el botón "Me interesa" del programa que te guste. Completa el formulario de inscripción.
+        </p>
+      </div>
+
+      <%# Paso 3 %>
+      <div class="flex flex-col items-center text-center">
+        <div class="flex h-16 w-16 items-center justify-center rounded-full bg-arrecife/20 text-2xl font-bold text-oceano">
+          3
+        </div>
+        <h3 class="mt-4 text-lg font-semibold text-abismo">Confirmación</h3>
+        <p class="mt-2 text-sm leading-relaxed text-profundo">
+          Revisaremos tu inscripción y te confirmaremos por correo. Luego, recibirás todos los detalles.
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <%# Call to action %>
+  <div class="mt-12 rounded-2xl border border-oceano/20 bg-gradient-to-br from-arrecife/10 to-oceano/10 p-8 text-center">
+    <h3 class="text-xl font-semibold text-abismo">¿Listo para tu próxima inmersión?</h3>
+    <p class="mt-2 text-sm text-profundo">
+      Explora nuestros programas disponibles y encuentra el que mejor se ajuste a ti.
+    </p>
+    <%= link_to "Ver programas disponibles", programs_path, class: "mt-6 inline-flex items-center justify-center rounded-xl bg-coral px-8 py-3 text-base font-semibold text-white shadow-md transition hover:bg-coral-hover focus:outline-none focus-visible:ring-2 focus-visible:ring-coral focus-visible:ring-offset-2" %>
+  </div>
+
+  <%# Información adicional %>
+  <div class="mt-12 rounded-lg bg-oceano/5 p-6">
+    <h3 class="text-sm font-semibold text-abismo">¿Tienes dudas?</h3>
+    <p class="mt-2 text-sm leading-relaxed text-profundo">
+      Si necesitas ayuda o tienes preguntas, puedes contactarnos en 
+      <a href="mailto:contacto@deepsoul.com" class="font-medium text-oceano underline decoration-oceano/40 hover:text-profundo">contacto@deepsoul.com</a>. 
+      Estaremos encantados de ayudarte.
+    </p>
+  </div>
+</div>

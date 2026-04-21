@@ -42,8 +42,7 @@
           <% if diver_signed_in? %>
             <span class="hidden text-arrecife/80 sm:inline" aria-hidden="true">|</span>
           <% end %>
-          <%= link_to "Panel agencia", staff_root_path, class: "font-medium text-abismo underline decoration-abismo/40 hover:text-oceano" %>
-          <%= link_to "Buzos", staff_divers_path, class: "text-abismo underline decoration-abismo/40 hover:text-oceano" %>
+          <%= render "shared/staff_nav_dropdown" %>
         <% end %>
       </div>
       <% if diver_signed_in? || user_signed_in? %>
