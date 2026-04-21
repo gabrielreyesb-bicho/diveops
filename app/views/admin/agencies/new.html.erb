@@ -1,0 +1,16 @@
+<% content_for :title, "Nueva agencia · Plataforma DiveOps" %>
+
+<div class="mx-auto max-w-lg space-y-6">
+  <div>
+    <h1 class="text-xl font-semibold text-profundo">Nueva agencia</h1>
+    <p class="mt-1 text-sm text-abismo/80">
+      El slug se usa en URLs internas; debe ser único (por ejemplo <span class="font-mono">mi-centro</span>).
+    </p>
+  </div>
+
+  <%= render "form", agency: @agency %>
+
+  <p class="text-center text-sm">
+    <%= link_to "Volver al listado", admin_agencies_path, class: "font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+  </p>
+</div>

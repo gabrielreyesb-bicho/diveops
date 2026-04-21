@@ -1,0 +1,46 @@
+<% content_for :title, "Agencias · Plataforma DiveOps" %>
+
+<div class="mx-auto max-w-5xl space-y-6">
+  <div class="flex flex-col gap-2 sm:flex-row sm:items-end sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-profundo">Agencias</h1>
+      <p class="mt-1 text-sm text-abismo/80">
+        Centros de buceo registrados en DiveOps.
+      </p>
+    </div>
+    <%= link_to "Nueva agencia", new_admin_agency_path, class: "inline-flex items-center justify-center rounded-lg border-2 border-oceano bg-white px-4 py-2 text-sm font-medium text-oceano shadow-sm transition hover:bg-espuma hover:text-profundo" %>
+  </div>
+
+  <% if @agencies.blank? %>
+    <p class="rounded-xl border border-arrecife bg-white p-6 text-sm text-abismo/80 shadow-sm">
+      Aún no hay agencias. Creá la primera con el botón de arriba.
+    </p>
+  <% else %>
+    <div class="overflow-x-auto rounded-xl border border-arrecife/80 bg-white shadow-sm">
+      <table class="min-w-full border-collapse text-left text-sm">
+        <thead class="border-b border-arrecife/60 bg-espuma/80 text-xs font-semibold uppercase tracking-wide text-slate-600">
+          <tr>
+            <th class="px-4 py-3" scope="col">Nombre</th>
+            <th class="px-4 py-3" scope="col">Slug</th>
+            <th class="px-4 py-3" scope="col">Contacto</th>
+            <th class="px-4 py-3" scope="col">Usuarios panel</th>
+            <th class="px-4 py-3" scope="col"><span class="sr-only">Acciones</span></th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-arrecife/40">
+          <% @agencies.each do |agency| %>
+            <tr class="bg-white text-abismo">
+              <td class="px-4 py-3 font-medium text-oceano"><%= agency.name %></td>
+              <td class="px-4 py-3 font-mono text-xs text-abismo/90"><%= agency.slug %></td>
+              <td class="max-w-[14rem] truncate px-4 py-3 text-abismo/90"><%= agency.contact_email %></td>
+              <td class="px-4 py-3 text-abismo/90"><%= agency.users.size %></td>
+              <td class="whitespace-nowrap px-4 py-3">
+                <%= link_to "Ver", admin_agency_path(agency), class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+  <% end %>
+</div>

@@ -1,0 +1,38 @@
+<%= form_with model: [:admin, agency],
+              html: { class: "space-y-4 w-full", multipart: true, novalidate: true },
+              data: { turbo: false } do |f| %>
+  <% if agency.errors.any? %>
+    <div class="rounded border border-red-300 bg-red-50 p-3 text-sm text-red-800">
+      <ul class="list-disc pl-5">
+        <% agency.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div>
+    <%= f.label :name, "Nombre", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.text_field :name, required: true, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <div>
+    <%= f.label :slug, "Slug", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.text_field :slug, required: true, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1 font-mono text-sm" %>
+  </div>
+
+  <div>
+    <%= f.label :contact_email, "Correo de contacto", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.email_field :contact_email, required: true, class: "mt-1 w-full rounded border border-slate-300 px-2 py-1" %>
+  </div>
+
+  <div>
+    <%= f.label :logo, "Logo (opcional)", class: "block text-sm font-medium text-slate-700" %>
+    <%= f.file_field :logo, accept: "image/*", class: "mt-1 w-full text-sm text-abismo" %>
+  </div>
+
+  <div class="pt-2">
+    <%= f.submit agency.new_record? ? "Crear agencia" : "Guardar cambios",
+               class: "inline-flex w-full cursor-pointer justify-center rounded-lg border-2 border-oceano bg-oceano px-4 py-2 text-sm font-medium text-espuma shadow-sm transition hover:border-profundo hover:bg-profundo sm:w-auto" %>
+  </div>
+<% end %>

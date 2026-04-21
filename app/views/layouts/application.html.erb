@@ -42,7 +42,12 @@
           <% if diver_signed_in? %>
             <span class="hidden text-arrecife/80 sm:inline" aria-hidden="true">|</span>
           <% end %>
-          <%= render "shared/staff_nav_dropdown" %>
+          <% if super_admin? %>
+            <%= link_to "Plataforma", admin_root_path, class: "text-profundo underline decoration-profundo/40 hover:text-oceano" %>
+          <% end %>
+          <% if current_agency.present? %>
+            <%= render "shared/staff_nav_dropdown" %>
+          <% end %>
         <% end %>
       </div>
       <% if diver_signed_in? || user_signed_in? %>

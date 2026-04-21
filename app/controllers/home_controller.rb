@@ -23,6 +23,11 @@ class HomeController < ApplicationController
   private
 
   def redirect_staff_to_dashboard
+    if user_signed_in? && current_user.super_admin? && current_agency.blank?
+      redirect_to admin_root_path
+      return
+    end
+
     redirect_to staff_root_path if user_signed_in? && current_agency.present?
   end
 end

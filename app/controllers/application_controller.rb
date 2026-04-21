@@ -9,10 +9,14 @@ class ApplicationController < ActionController::Base
 
   before_action :set_locale
 
-  helper_method :current_user, :current_diver, :current_agency
+  helper_method :current_user, :current_diver, :current_agency, :super_admin?
 
   def after_sign_in_path_for(resource)
-    return staff_root_path if resource.is_a?(User)
+    if resource.is_a?(User)
+      return admin_root_path if resource.super_admin? && resource.agency_id.nil?
+
+      return staff_root_path
+    end
 
     if resource.is_a?(Diver)
       stored_location_for(resource) || programs_path
@@ -31,5 +35,9 @@ class ApplicationController < ActionController::Base
 
   def current_agency
     current_user&.agency
+  end
+
+  def super_admin?
+    current_user&.super_admin? || false
   end
 end

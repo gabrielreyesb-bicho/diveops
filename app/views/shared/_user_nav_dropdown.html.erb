@@ -25,7 +25,12 @@
     </div>
     
     <%= link_to "Mi perfil", edit_user_registration_path, class: "block px-4 py-2 text-abismo no-underline hover:bg-espuma", role: "menuitem" %>
-    <%= link_to "Panel agencia", staff_root_path, class: "block px-4 py-2 text-abismo no-underline hover:bg-espuma", role: "menuitem" %>
+    <% if super_admin? %>
+      <%= link_to "Plataforma — agencias", admin_root_path, class: "block px-4 py-2 text-abismo no-underline hover:bg-espuma", role: "menuitem" %>
+    <% end %>
+    <% if current_agency.present? %>
+      <%= link_to "Panel agencia", staff_root_path, class: "block px-4 py-2 text-abismo no-underline hover:bg-espuma", role: "menuitem" %>
+    <% end %>
     
     <div class="my-1 border-t border-abismo/10"></div>
     

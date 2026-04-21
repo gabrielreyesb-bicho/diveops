@@ -1,5 +1,13 @@
 es:
+  errors:
+    messages:
+      blank: no puede estar en blanco
+
   activerecord:
+    attributes:
+      user:
+        agency_id: Agencia
+
     enums:
       dive_trip:
         status:

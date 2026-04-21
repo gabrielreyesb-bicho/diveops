@@ -1,0 +1,47 @@
+<% content_for :title, "#{@agency.name} · Plataforma DiveOps" %>
+
+<div class="mx-auto max-w-3xl space-y-6">
+  <div class="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
+    <div>
+      <h1 class="text-xl font-semibold text-profundo"><%= @agency.name %></h1>
+      <p class="mt-1 font-mono text-sm text-abismo/80"><%= @agency.slug %></p>
+    </div>
+    <div class="flex flex-wrap gap-3">
+      <%= link_to "Editar", edit_admin_agency_path(@agency), class: "inline-flex items-center justify-center rounded-lg border-2 border-oceano bg-white px-4 py-2 text-sm font-medium text-oceano shadow-sm transition hover:bg-espuma hover:text-profundo" %>
+      <%= link_to "← Todas las agencias", admin_agencies_path, class: "text-sm font-medium text-caribe underline decoration-caribe/40 hover:text-oceano" %>
+    </div>
+  </div>
+
+  <dl class="rounded-xl border border-arrecife/80 bg-white p-6 text-sm shadow-sm">
+    <div class="grid gap-1 border-b border-arrecife/40 py-3 first:pt-0 last:border-b-0 last:pb-0 sm:grid-cols-[8rem_1fr] sm:gap-4">
+      <dt class="font-medium text-slate-600">Correo de contacto</dt>
+      <dd class="text-abismo"><%= @agency.contact_email %></dd>
+    </div>
+    <div class="grid gap-1 border-b border-arrecife/40 py-3 last:border-b-0 last:pb-0 sm:grid-cols-[8rem_1fr] sm:gap-4">
+      <dt class="font-medium text-slate-600">Usuarios del panel</dt>
+      <dd class="text-abismo"><%= @agency.users.size %></dd>
+    </div>
+  </dl>
+
+  <% if @agency.logo.attached? %>
+    <div class="rounded-xl border border-arrecife/80 bg-white p-4 shadow-sm">
+      <p class="text-sm font-medium text-slate-600">Logo</p>
+      <% logo_src = @agency.logo.variable? ? @agency.logo.variant(resize_to_limit: [ 320, 320 ]) : @agency.logo %>
+      <%= image_tag logo_src, class: "mt-2 max-h-32 rounded-lg object-contain", alt: "" %>
+    </div>
+  <% end %>
+
+  <div class="border-t border-arrecife/60 pt-6">
+    <% if @agency.users.any? %>
+      <p class="text-sm text-abismo/80">
+        Para eliminar esta agencia, primero hay que reasignar o dar de baja a los <%= @agency.users.size %> usuario(s) del panel asociados.
+      </p>
+    <% else %>
+      <%= button_to "Eliminar agencia",
+                    admin_agency_path(@agency),
+                    method: :delete,
+                    form: { data: { turbo_confirm: "¿Eliminar #{@agency.name}? Esta acción no se puede deshacer." } },
+                    class: "inline-flex justify-center rounded-lg border-2 border-coral/55 bg-white px-4 py-2 text-sm font-medium text-coral shadow-sm transition hover:bg-coral/10" %>
+    <% end %>
+  </div>
+</div>
